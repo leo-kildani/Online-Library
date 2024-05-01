@@ -1,5 +1,3 @@
-chmod +x "$0"
-
 cd src/main/resources/scripts
 
 read -p "Enter MySQL username (recommended: root): " DBUSER
