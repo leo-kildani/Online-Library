@@ -11,7 +11,9 @@ VALUES
 ('grace_h', 'grace12345', 'grace.h@example.org', 'Grace', 'Hall', 1, '1981-04-14'),
 ('hannah_sun', 'sunshine', 'hannah.sun@example.com', 'Hannah', 'Sun', 1, '1986-07-23'),
 ('ian_neo', 'neomatrix', 'ian.neo@example.net', 'Ian', 'Neo', 0, '1991-09-17'),
-('julia_blue', 'juliablue', 'julia.blue@example.org', 'Julia', 'Blue', 1, '1990-10-12');
+('julia_blue', 'juliablue', 'julia.blue@example.org', 'Julia', 'Blue', 1, '1990-10-12'),
+('amy_789', 'amy882jkk', 'amy_789@example.org', 'Amy', 'Ring', 1, '1987-11-08'),
+('ricky_ho', 'rickyho2000', 'ricky.ho@example.org', 'Ricky', 'Ho', 1, '2000-01-30');
 
 INSERT INTO user_roles (username, role)
 VALUES
@@ -24,8 +26,9 @@ VALUES
 ('grace_h', 'Member'),
 ('hannah_sun', 'Member'),
 ('ian_neo', 'Admin'),
-('julia_blue', 'Admin');
-
+('julia_blue', 'Admin'),
+('amy_789', 'Staff'),
+('ricky_ho', 'Staff');
 
 INSERT INTO authors (first_name, last_name, biography)
 VALUES
