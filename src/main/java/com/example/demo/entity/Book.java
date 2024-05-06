@@ -29,7 +29,6 @@ public @Data class Book {
     @Column(name = "publish_date")
     private LocalDate publishDate;
 
-    @Column(name = "genre_name")
-    private String genreName;
-
+    @Column(name = "description")
+    private String description;
 }

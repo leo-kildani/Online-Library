@@ -2,72 +2,38 @@ package com.example.demo.repository;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.Repository;
 
+import com.example.demo.entity.Book;
+import com.example.demo.entity.Genre;
+import com.example.demo.entity.Review;
 import com.example.demo.entity.User;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
-import jakarta.transaction.Transactional;
+public interface UserRepository extends Repository<User, String> {
 
-@Repository
-public class UserRepository implements UserRepositoryI {
+    // save or update a user to db
+    void save(User user);
 
-    private EntityManager entityManager;
+    // find a string match to provided username
+    User findByUsername(String username);
 
-    public UserRepository(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    // find similar/substring match to provided username
+    List<User> findLikeUsername(String username);
 
-    @Override
-    @Transactional
-    public void save(User user) {
-        if (entityManager.find(User.class, user.getUsername()) != null) {
-            entityManager.merge(user);
-        } else {
-            entityManager.persist(user);
-        }
-    }
+    // find all users
+    List<User> findAll();
 
-    @Override
-    public User findByUsername(String username) {
-        return entityManager.find(User.class, username);
-    }
+    // delete user
+    void delete(User user);
 
-    @Override
-    public List<User> findLikeUsername(String username) {
-        String queryString = "SELECT * FROM users U WHERE U.username LIKE :usernamePattern";
-        Query query = entityManager.createNativeQuery(queryString, User.class);
-        query.setParameter("usernamePattern", "%" + username + "%");
-        return (List<User>) query.getResultList();
-    }
+    // find a similar/substring match to provided name
+    List<User> findLikeName(String name);
 
-    @Override
-    public List<User> findAll() {
-        String queryString = "SELECT * FROM users";
-        Query query = entityManager.createNativeQuery(queryString, User.class);
-        return (List<User>) query.getResultList();
-    }
+    List<Genre> getUserLikedGenres(User user);
 
-    @Override
-    @Transactional
-    public void delete(User user) {
-        entityManager.remove(user);
-    }
+    List<Review> getUserReviews(User user);
 
-    @Override
-    public User findByEmail(String name, String server, String domain) {
-        String queryString = "SELECT * FROM users U WHERE U.email = :emailPattern";
-        Query query = entityManager.createNativeQuery(queryString, User.class);
-        query.setParameter("emailPattern", name + "@" + server + "." + domain);
-        return (User) query.getSingleResult();
-    }
+    List<Book> getUserCheckedBooks(User user);
 
-    @Override
-    public List<User> findLikeName(String name) {
-        String queryString = "SELECT DISTINCT * FROM users U WHERE U.first_name = :name OR U.last_name = :name";
-        Query query = entityManager.createNativeQuery(queryString, User.class);
-        query.setParameter("name", name);
-        return (List<User>) query.getResultList();
-    }
+    double getUserLateFees(User user);
 }

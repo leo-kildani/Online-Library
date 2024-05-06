@@ -24,8 +24,8 @@ public @Data class Review {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "poster_username")
-    private String posterUsername;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "publish_date")
     private LocalDate publishDate;
@@ -33,10 +33,10 @@ public @Data class Review {
     @Column(name = "isbn")
     private String isbn;
 
-    public Review(String content, String posterUsername, LocalDate publishDate, String isbn) {
+    public Review(String content, String posterUsername, String isbn) {
         this.content = content;
-        this.posterUsername = posterUsername;
-        this.publishDate = publishDate;
+        this.username = posterUsername;
+        this.publishDate = LocalDate.now();
         this.isbn = isbn;
     }
 
