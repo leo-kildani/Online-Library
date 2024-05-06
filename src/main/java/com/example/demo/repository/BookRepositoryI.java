@@ -1,0 +1,27 @@
+package com.example.demo.repository;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.data.repository.Repository;
+
+import com.example.demo.entity.Book;
+
+public interface BookRepositoryI extends Repository<Book, String> {
+
+    void save(Book book);
+
+    void delete(Book book);
+
+    List<Book> findAll();
+
+    Book findByIsbn(String isbn);
+
+    List<Book> findByAuthorLastName(String lastName);
+
+    List<Book> findLikeTitle(String title);
+
+    List<Book> findByGenre(String genre);
+
+    List<Book> findByPublishDate(LocalDate publishDate);
+}

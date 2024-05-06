@@ -20,8 +20,8 @@ public interface UserRepositoryI extends Repository<User, String> {
     // find all users
     List<User> findAll();
 
-    // delete user by username
-    void deleteByUsername(String username);
+    // delete user
+    void delete(User user);
 
     // find a string match to provided email
     User findByEmail(String name, String server, String domain);

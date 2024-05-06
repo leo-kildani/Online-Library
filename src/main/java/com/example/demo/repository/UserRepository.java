@@ -36,7 +36,7 @@ public class UserRepository implements UserRepositoryI {
 
     @Override
     public List<User> findLikeUsername(String username) {
-        String queryString = "SELECT * FROM users WHERE username LIKE :usernamePattern";
+        String queryString = "SELECT * FROM users U WHERE U.username LIKE :usernamePattern";
         Query query = entityManager.createNativeQuery(queryString, User.class);
         query.setParameter("usernamePattern", "%" + username + "%");
         return (List<User>) query.getResultList();
@@ -51,14 +51,13 @@ public class UserRepository implements UserRepositoryI {
 
     @Override
     @Transactional
-    public void deleteByUsername(String username) {
-        User userToDelete = findByUsername(username);
-        entityManager.remove(userToDelete);
+    public void delete(User user) {
+        entityManager.remove(user);
     }
 
     @Override
     public User findByEmail(String name, String server, String domain) {
-        String queryString = "SELECT * FROM users WHERE email = :emailPattern";
+        String queryString = "SELECT * FROM users U WHERE U.email = :emailPattern";
         Query query = entityManager.createNativeQuery(queryString, User.class);
         query.setParameter("emailPattern", name + "@" + server + "." + domain);
         return (User) query.getSingleResult();
@@ -66,7 +65,7 @@ public class UserRepository implements UserRepositoryI {
 
     @Override
     public List<User> findLikeName(String name) {
-        String queryString = "SELECT DISTINCT * FROM users WHERE first_name = :name OR last_name = :name";
+        String queryString = "SELECT DISTINCT * FROM users U WHERE U.first_name = :name OR U.last_name = :name";
         Query query = entityManager.createNativeQuery(queryString, User.class);
         query.setParameter("name", name);
         return (List<User>) query.getResultList();
