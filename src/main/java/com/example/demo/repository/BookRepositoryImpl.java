@@ -70,7 +70,7 @@ public class BookRepositoryImpl implements BookRepository {
     public List<Book> findLikeTitle(String title) {
         String queryString = "SELECT * FROM books B WHERE B.title LIKE :title";
         Query query = entityManager.createNativeQuery(queryString, Book.class);
-        query.setParameter("tite", "%" + title + "%");
+        query.setParameter("title", "%" + title + "%");
         return (List<Book>) query.getResultList();
     }
 
