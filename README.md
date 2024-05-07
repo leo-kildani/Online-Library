@@ -6,7 +6,14 @@
 - Maven (Optional; Maven wrapper included in project) 
 
 # Instructions
-## 1. Setting up MySQL
+## 1. Cloning Repo
+- Run the following command in shell
+```sh
+git clone https://github.com/leo-kildani/CS157A-Final.git
+./mvnw clean install
+```
+
+## 2. Setting up MySQL
 - Run the following commands in shell
 ```sh
 chmod +x ./run_sql.sh
