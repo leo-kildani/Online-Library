@@ -3,6 +3,8 @@ package com.example.demo.repository;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.Book;
@@ -16,11 +18,11 @@ import jakarta.transaction.Transactional;
 @Repository
 public class BookRepositoryImpl implements BookRepository {
 
+    @Autowired
     private EntityManager entityManager;
 
-    public BookRepositoryImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     @Transactional
@@ -38,6 +40,7 @@ public class BookRepositoryImpl implements BookRepository {
         entityManager.remove(book);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Book> findAll() {
         String queryString = "SELECT * FROM books";
@@ -53,6 +56,7 @@ public class BookRepositoryImpl implements BookRepository {
         return (Book) query.getSingleResult();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Book> findByAuthorLastName(String lastName) {
         String queryString = "SELECT B.* FROM books B INNER JOIN authors A ON B.author_id = A.author_id WHERE A.last_name = :lastName";
@@ -61,6 +65,7 @@ public class BookRepositoryImpl implements BookRepository {
         return (List<Book>) query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Book> findLikeTitle(String title) {
         String queryString = "SELECT * FROM books B WHERE B.title LIKE :title";
@@ -69,6 +74,7 @@ public class BookRepositoryImpl implements BookRepository {
         return (List<Book>) query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Book> findByGenre(String genre) {
         String queryString = "SELECT * FROM books B WHERE B.genre_name = :genre";
@@ -77,6 +83,7 @@ public class BookRepositoryImpl implements BookRepository {
         return (List<Book>) query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Book> findByPublishDate(LocalDate publishDate) {
         String queryString = "SELECT * FROM books B WHERE B.publish_date = :publishDate";
@@ -93,6 +100,7 @@ public class BookRepositoryImpl implements BookRepository {
         return (Integer) query.getSingleResult();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Genre> getBookGenres(Book book) {
         String queryString = "SELECT G.* FROM book_is_genre BG INNER JOIN genres G ON BG.genre_name = G.genre_name WHERE BG.isbn = :isbn";
@@ -101,6 +109,7 @@ public class BookRepositoryImpl implements BookRepository {
         return (List<Genre>) query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Review> getBookReviews(Book book) {
         String queryString = "SELECT * FROM reviews R WHERE R.isbn = :isbn";
@@ -117,4 +126,22 @@ public class BookRepositoryImpl implements BookRepository {
             .setParameter("isbn", book.getIsbn());
         return (boolean) query.getSingleResult();
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Book> findByAuthorId(int authorId) {
+        String queryString = "SELECT * FROM books B WHERE B.author_id = :author_id";
+        Query query = entityManager.createNativeQuery(queryString, Book.class);
+        query.setParameter("author_id", authorId);
+        return (List<Book>) query.getResultList();
+    }
+
+    @Override
+    public void bookIsGenres(Book book, List<Genre> genres) {
+        String insertString = "INSERT INTO book_is_genre (isbn, genre_name) VALUES (?, ?)";
+        for (Genre genre: genres) {
+            jdbcTemplate.update(insertString, book.getIsbn(), genre.getName());
+        }
+    }
+
 }

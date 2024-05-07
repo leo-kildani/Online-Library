@@ -4,8 +4,11 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.entity.Author;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.BookCheckout;
 import com.example.demo.entity.Genre;
@@ -19,11 +22,11 @@ import jakarta.transaction.Transactional;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
+    @Autowired
     private EntityManager entityManager;
 
-    public UserRepositoryImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     @Transactional
@@ -40,6 +43,7 @@ public class UserRepositoryImpl implements UserRepository {
         return entityManager.find(User.class, username);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<User> findLikeUsername(String username) {
         String queryString = "SELECT * FROM users U WHERE U.username LIKE :usernamePattern";
@@ -49,6 +53,7 @@ public class UserRepositoryImpl implements UserRepository {
         return (List<User>) query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<User> findAll() {
         String queryString = "SELECT * FROM users";
@@ -62,6 +67,7 @@ public class UserRepositoryImpl implements UserRepository {
         entityManager.remove(user);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<User> findLikeName(String name) {
         String queryString = "SELECT DISTINCT * FROM users U WHERE U.first_name = :name OR U.last_name = :name";
@@ -71,6 +77,7 @@ public class UserRepositoryImpl implements UserRepository {
         return (List<User>) query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Genre> getUserLikedGenres(User user) {
         String queryString = "SELECT G.* FROM user_likes_genres UG INNER JOIN genres G ON UG.genre_name = G.genre_name WHERE UG.username = :username";
@@ -80,6 +87,7 @@ public class UserRepositoryImpl implements UserRepository {
         return (List<Genre>) query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Review> getUserReviews(User user) {
         String queryString = "SELECT * FROM reviews R WHERE R.username = :username";
@@ -89,6 +97,7 @@ public class UserRepositoryImpl implements UserRepository {
         return (List<Review>) query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Book> getUserCheckedBooks(User user) {
         String queryString = "SELECT B.* FROM book_checkouts BC INNER JOIN books B ON BC.isbn = B.isbn WHERE BC.username = :username";
@@ -98,6 +107,7 @@ public class UserRepositoryImpl implements UserRepository {
         return (List<Book>) query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public double getUserLateFees(User user) {
         String bookCheckoutQueryString = "SELECT * FROM book_checkouts BC WHERE BC.username = :username";
@@ -122,4 +132,45 @@ public class UserRepositoryImpl implements UserRepository {
             .mapToDouble(Double::doubleValue)
             .sum();
     }
+
+    @Override
+    public void userLikesGenre(User user, Genre genre) {
+        String insertString = "INSERT INTO user_likes_genres (username, genre_name) VALUES (?, ?)";
+        jdbcTemplate.update(insertString, user.getUsername(), genre.getName());
+    }
+
+    @Override
+    public void userUnlikesGenre(User user, Genre genre) {
+        String deleteString = "DELETE FROM user_likes_genres WHERE username = ? AND genre_name = ?";
+        jdbcTemplate.update(deleteString, user.getUsername(), genre.getName());
+    }
+
+    @Override
+    public void userFavoritesAuthor(User user, Author author) {
+        String insertString = "INSERT INTO user_favorites_author (username, author_id) VALUES (?, ?)";
+        jdbcTemplate.update(insertString, user.getUsername(), author.getAuthorId());
+    }
+
+    @Override
+    public void userUnfavoritesAuthor(User user, Author author) {
+        String deleteString = "DELETE FROM user_favorites_author WHERE username = ? AND author_id = ?";
+        jdbcTemplate.update(deleteString, user.getUsername(), author.getAuthorId());
+    }
+
+    @Override
+    public void userRatesBook(User user, Book book, int stars) {
+        String insertString = "INSERT INTO user_rates_book (username, isbn, stars) VALUES (?, ?, ?)";
+        jdbcTemplate.update(insertString, user.getUsername(), book.getIsbn(), stars);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Author> getUserFavoriteAuthors(User user) {
+        String queryString = "SELECT A.* FROM user_favorites_author UA INNER JOIN authors A ON UA.author_id = A.author_id WHERE UA.username = :username";
+        Query query = entityManager
+            .createNativeQuery(queryString, Author.class)
+            .setParameter("username", user.getUsername());
+        return (List<Author>) query.getResultList();
+    }
+
 }

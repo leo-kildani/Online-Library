@@ -2,9 +2,6 @@ package com.example.demo.service;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import org.springframework.security.core.userdetails.UserDetailsService;
-
 import com.example.demo.entity.Author;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.BookCheckout;
@@ -12,9 +9,9 @@ import com.example.demo.entity.Genre;
 import com.example.demo.entity.Review;
 import com.example.demo.entity.User;
 
-public interface LibraryManagementSystemService extends UserDetailsService {
+public interface LibraryManagementSystemService {
    
-    void addUser(String username, String password, String email, String firstName, String lastName, LocalDate dob);
+    void addUser(String username, String password, String email, String firstName, String lastName, LocalDate dob, String role);
 
     void updateUser(User user);
 
@@ -32,9 +29,19 @@ public interface LibraryManagementSystemService extends UserDetailsService {
 
     void addAuthor(String firstName, String lastName, String biography);
 
+    List<Author> getUserFavoriteAuthor(User user);
+
+    void userFavoritesAuthor(User user, Author author);
+
+    void userUnfavoritesAuthor(User user, Author author);
+
+    void updateAuthor(Author author);
+
     void deleteAuthor(Author author);
 
-    void addBook(String isbn, String title, Author author, LocalDate publishDate, String description);
+    void addBook(String isbn, String title, Author author, LocalDate publishDate, String description, List<Genre> genres);
+
+    void updateBook(Book book);
 
     Book getBook(String isbn);
 
@@ -60,6 +67,8 @@ public interface LibraryManagementSystemService extends UserDetailsService {
 
     void addReview(String content, User user, Book book);
 
+    void updateReview(Review review);
+
     List<Review> getUserReviews(User user);
 
     List<Review> getBookReviews(Book book);
@@ -68,4 +77,11 @@ public interface LibraryManagementSystemService extends UserDetailsService {
 
     void addGenre(String genreName, String overview);
 
+    List<Genre> getUserLikedGenres(User user);
+
+    void userLikesGenre(User user, Genre genre);
+
+    void userUnlikesGenre(User user, Genre genre);
+
+    void deleteGenre(Genre genre);
 }
