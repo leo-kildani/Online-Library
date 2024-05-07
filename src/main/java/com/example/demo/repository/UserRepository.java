@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.Repository;
 
+import com.example.demo.entity.Author;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Genre;
 import com.example.demo.entity.Review;
@@ -29,6 +30,8 @@ public interface UserRepository extends Repository<User, String> {
     // find a similar/substring match to provided name
     List<User> findLikeName(String name);
 
+    List<Author> getUserFavoriteAuthors(User user);
+
     List<Genre> getUserLikedGenres(User user);
 
     List<Review> getUserReviews(User user);
@@ -36,4 +39,14 @@ public interface UserRepository extends Repository<User, String> {
     List<Book> getUserCheckedBooks(User user);
 
     double getUserLateFees(User user);
+
+    void userLikesGenre(User user, Genre genre);
+
+    void userUnlikesGenre(User user, Genre genre);
+
+    void userFavoritesAuthor(User user, Author author);
+
+    void userUnfavoritesAuthor(User user, Author author);
+
+    void userRatesBook(User user, Book book, int stars);
 }
