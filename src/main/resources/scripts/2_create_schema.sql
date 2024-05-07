@@ -33,50 +33,66 @@ CREATE TABLE genres (
     PRIMARY KEY (`genre_name`)
 );
 
-CREATE TABLE subgenres (
-    `genre_name` VARCHAR(64),
-    `subgenre_name` VARCHAR(64) NOT NULL,
-    PRIMARY KEY (`genre_name`, `subgenre_name`),
-    FOREIGN KEY (`genre_name`) REFERENCES genres(`genre_name`) ON DELETE CASCADE,
-    INDEX idx_genre_subgenre (`genre_name`, `subgenre_name`)
-);
-
 CREATE TABLE books (
     `isbn` CHAR(13),
     `title` VARCHAR(64) NOT NULL,
     `author_id` INT NOT NULL,
     `publish_date` DATE NOT NULL,
-    `genre_name` VARCHAR(64) NOT NULL,
+    `description` VARCHAR(512), 
     PRIMARY KEY (`isbn`),
-    FOREIGN KEY (`author_id`) REFERENCES authors(`author_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (`genre_name`) REFERENCES genres(`genre_name`) ON DELETE RESTRICT
+    FOREIGN KEY (`author_id`) REFERENCES authors(`author_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE reviews (
     `review_id` INT AUTO_INCREMENT,
     `content` VARCHAR(512) NOT NULL,
-    `poster_username` VARCHAR(64) NOT NULL,
+    `username` VARCHAR(64) NOT NULL,
     `publish_date` DATE NOT NULL,
     `isbn` CHAR(13) NOT NULL,
     PRIMARY KEY (`review_id`),
-    FOREIGN KEY (`poster_username`) REFERENCES users(`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`username`) REFERENCES users(`username`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`isbn`) REFERENCES books(`isbn`) ON DELETE CASCADE
+);
+
+CREATE TABLE book_checkouts (
+    `checkout_id` INT AUTO_INCREMENT,
+    `username` VARCHAR(64) NOT NULL,
+    `isbn` CHAR(13) NOT NULL,
+    `checkout_date` DATE NOT NULL,
+    PRIMARY KEY (`checkout_id`),
+    FOREIGN KEY (`username`) REFERENCES users(`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`isbn`) REFERENCES books(`isbn`) ON DELETE CASCADE ON UPDATE CASCADE 
 );
 
 CREATE TABLE user_favorites_author (
     `username` VARCHAR(64),
     `author_id` INT,
-    PRIMARY KEY (`username`, `author_id`)
+    PRIMARY KEY (`username`, `author_id`),
+    FOREIGN KEY (`username`) REFERENCES users(`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`author_id`) REFERENCES authors(`author_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE user_likes_genre (
+CREATE TABLE user_likes_genres (
     `username` VARCHAR(64),
     `genre_name` VARCHAR(64),
-    PRIMARY KEY (`username`, `genre_name`)
+    PRIMARY KEY (`username`, `genre_name`),
+    FOREIGN KEY (`username`) REFERENCES users(`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`genre_name`) REFERENCES genres(`genre_name`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE book_is_subgenre (
+CREATE TABLE user_rates_book (
+    `username` VARCHAR(64),
     `isbn` CHAR(13),
-    `subgenre_name` VARCHAR(64),
-    PRIMARY KEY (`isbn`, `subgenre_name`)
+    `stars` TINYINT,
+    PRIMARY KEY (`username`, `isbn`),
+    FOREIGN KEY (`username`) REFERENCES users(`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`isbn`) REFERENCES books(`isbn`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE book_is_genre (
+    `isbn` CHAR(13),
+    `genre_name` VARCHAR(64),
+    PRIMARY KEY (`isbn`, `genre_name`),
+    FOREIGN KEY (`isbn`) REFERENCES books(`isbn`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`genre_name`) REFERENCES genres(`genre_name`) ON DELETE CASCADE ON UPDATE CASCADE
 );
