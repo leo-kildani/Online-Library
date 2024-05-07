@@ -56,33 +56,20 @@ VALUES
 ('Poetry', 'Poetry emphasizes expression through the structure of verse and rhythmic qualities of the language used.'),
 ('Self-Help', 'Self-Help genres focus on personal improvement and often provide guidance and strategies to enhance oneself.');
 
-INSERT INTO subgenres (genre_name, subgenre_name)
+INSERT INTO books (isbn, title, author_id, publish_date)
 VALUES
-('Fantasy', 'High Fantasy'),
-('Fantasy', 'Urban Fantasy'),
-('Science Fiction', 'Cyberpunk'),
-('Science Fiction', 'Space Opera'),
-('Mystery', 'Cozy Mystery'),
-('Mystery', 'Detective Fiction'),
-('Romance', 'Contemporary Romance'),
-('Romance', 'Historical Romance'),
-('Thriller', 'Psychological Thriller'),
-('Thriller', 'Crime Thriller');
+('978-3-16-1-0', 'The Enchanted Forest', 1, '2021-05-15'),
+('978-0-262-2-9', 'Futures Unseen', 3, '2022-08-23'),
+('978-1-860-3-6', 'Mystery of the Old House', 2, '2019-03-10'),
+('978-3-16-4-1', 'Love in the Mountains', 5, '2018-07-21'),
+('978-0-262-5-0', 'The Final Hour', 4, '2020-11-11'),
+('978-1-860-6-7', 'A Tale of Two Wars', 6, '2017-02-14'),
+('978-3-16-7-2', 'Nightmare Alley', 7, '2023-01-01'),
+('978-0-262-8-1', 'Life of Pi', 8, '2015-05-20'),
+('978-1-860-9-8', 'Echoes of the Heart', 9, '2021-09-12'),
+('978-3-16-10-3', 'Becoming Your Best', 10, '2022-06-30');
 
-INSERT INTO books (isbn, title, author_id, publish_date, genre_name)
-VALUES
-('978-3-16-1-0', 'The Enchanted Forest', 1, '2021-05-15', 'Fantasy'),
-('978-0-262-2-9', 'Futures Unseen', 3, '2022-08-23', 'Science Fiction'),
-('978-1-860-3-6', 'Mystery of the Old House', 2, '2019-03-10', 'Mystery'),
-('978-3-16-4-1', 'Love in the Mountains', 5, '2018-07-21', 'Romance'),
-('978-0-262-5-0', 'The Final Hour', 4, '2020-11-11', 'Thriller'),
-('978-1-860-6-7', 'A Tale of Two Wars', 6, '2017-02-14', 'Historical Fiction'),
-('978-3-16-7-2', 'Nightmare Alley', 7, '2023-01-01', 'Horror'),
-('978-0-262-8-1', 'Life of Pi', 8, '2015-05-20', 'Biography'),
-('978-1-860-9-8', 'Echoes of the Heart', 9, '2021-09-12', 'Poetry'),
-('978-3-16-10-3', 'Becoming Your Best', 10, '2022-06-30', 'Self-Help');
-
-INSERT INTO reviews (content, poster_username, publish_date, isbn)
+INSERT INTO reviews (content, username, publish_date, isbn)
 VALUES
 ('A captivating tale of adventure and magic.', 'alice123', '2023-04-01', '978-3-16-1-0'),
 ('A thought-provoking book that explores deep themes of technology and humanity.', 'bobmarley', '2023-04-02', '978-0-262-2-9'),
@@ -106,7 +93,7 @@ VALUES
 ('hannah_sun', 6);
 
 
-INSERT INTO user_likes_genre (username, genre_name)
+INSERT INTO user_likes_genres (username, genre_name)
 VALUES
 ('alice123', 'Fantasy'),
 ('bobmarley', 'Science Fiction'),
@@ -117,15 +104,15 @@ VALUES
 ('grace_h', 'Horror'),
 ('hannah_sun', 'Biography');
 
-INSERT INTO book_is_subgenre (isbn, subgenre_name)
+INSERT INTO book_is_genre (isbn, genre_name)
 VALUES
-('978-3-16-1-0', 'High Fantasy'),
-('978-0-262-2-9', 'Cyberpunk'),
-('978-1-860-3-6', 'Detective Fiction'),
-('978-3-16-4-1', 'Contemporary Romance'),
-('978-0-262-5-0', 'Psychological Thriller'),
-('978-1-860-6-7', 'War Fiction'),
-('978-3-16-7-2', 'Supernatural Horror'),
-('978-0-262-8-1', 'Literary Biography'),
-('978-1-860-9-8', 'Narrative Poetry'),
-('978-3-16-10-3', 'Motivational');
+('978-3-16-1-0', 'Fantasy'),
+('978-0-262-2-9', 'Science Fiction'),
+('978-1-860-3-6', 'Mystery'),
+('978-3-16-4-1', 'Romance'),
+('978-0-262-5-0', 'Thriller'),
+('978-1-860-6-7', 'Historical Fiction'),
+('978-3-16-7-2', 'Horror'),
+('978-0-262-8-1', 'Biography'),
+('978-1-860-9-8', 'Poetry'),
+('978-3-16-10-3', 'Self-Help');
