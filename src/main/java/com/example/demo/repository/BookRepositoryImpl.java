@@ -149,9 +149,10 @@ public class BookRepositoryImpl implements BookRepository {
     @SuppressWarnings("unchecked")
     @Override
     public List<Book> getUserBookRecommendations(User user) {
-        String queryString = "SELECT * FROM books B WHERE B.author_id IN (SELECT author_id FROM authors WHERE author_id IN (SELECT author_id FROM user_likes_author WHERE user_id = :user_id) ORDER BY publish_date DESC LIMIT 5) UNION SELECT * FROM books B WHERE B.genre_name IN (SELECT genre_name FROM user_likes_genre WHERE user_id = :user_id) ORDER BY RAND() LIMIT 5";
-        Query query = entityManager.createNativeQuery(queryString, Book.class);
-        query.setParameter("user_id", user.getUsername());
+        String queryString = " (SELECT b.* FROM books b JOIN authors a ON b.author_id = a.author_id JOIN user_favorites_author ufa ON a.author_id = ufa.author_id WHERE ufa.username = :username ORDER BY b.publish_date DESC LIMIT 5) UNION (SELECT b.* FROM books b JOIN book_is_genre big ON b.isbn = big.isbn JOIN user_likes_genres ulg ON big.genre_name = ulg.genre_name WHERE ulg.username = :username ORDER BY RAND() LIMIT 5);";
+        Query query = entityManager
+            .createNativeQuery(queryString, Book.class)
+            .setParameter("username", user.getUsername());
         return (List<Book>) query.getResultList();
     }
 }
