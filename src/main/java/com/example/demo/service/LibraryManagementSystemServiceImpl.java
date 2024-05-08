@@ -157,7 +157,7 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
-    public List<Book> getBookByAppliedFilters(String title, String authorLastName, Genre genre, LocalDate publishDate) {
+    public List<Book> getBookByAppliedFilters(String title, String authorLastName, String genre, LocalDate publishDate) {
         List<Book> result = new ArrayList<>();
         if (title != null) {
             result.retainAll(bookRepository.findLikeTitle(title));
@@ -166,7 +166,7 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
             result.retainAll(bookRepository.findByAuthorLastName(authorLastName));
         }
         if (genre != null) {
-            result.retainAll(bookRepository.findByGenre(genre.getName()));
+            result.retainAll(bookRepository.findByGenre(genre));
         }
         if (publishDate != null) {
             result.retainAll(bookRepository.findByPublishDate(publishDate));

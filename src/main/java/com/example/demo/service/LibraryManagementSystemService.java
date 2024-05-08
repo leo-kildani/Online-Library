@@ -55,7 +55,7 @@ public interface LibraryManagementSystemService {
 
     List<Book> getBooksByPublishDate(LocalDate date);
 
-    List<Book> getBookByAppliedFilters(String title, String authorLastName, Genre genre, LocalDate publishDate);
+    List<Book> getBookByAppliedFilters(String title, String authorLastName, String genre, LocalDate publishDate);
 
     int getBookStarRating(Book book);
 

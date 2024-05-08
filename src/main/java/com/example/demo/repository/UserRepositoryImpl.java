@@ -172,5 +172,4 @@ public class UserRepositoryImpl implements UserRepository {
             .setParameter("username", user.getUsername());
         return (List<Author>) query.getResultList();
     }
-
 }
