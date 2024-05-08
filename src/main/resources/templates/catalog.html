@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +14,7 @@
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" href="userprofile.html">Account</a>
+          <a class="nav-link" href="/userprofile">Account</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/logout">Logout</a>
@@ -26,14 +26,14 @@
 
 <div class="container">
   <h1>Search for Books</h1>
-  <form id="searchForm" class="mb-4">
+  <form id="searchForm" class="mb-4" action="/catalog/search" method="GET">
     <div class="mb-3">
       <label for="title" class="form-label">Book Title:</label>
       <input type="text" class="form-control" id="title" name="title" placeholder="Enter book title">
     </div>
     <div class="mb-3">
-      <label for="author" class="form-label">Author Name:</label>
-      <input type="text" class="form-control" id="author" name="author" placeholder="Enter author name">
+      <label for="author" class="form-label">Author Last Name:</label>
+      <input type="text" class="form-control" id="author" name="author" placeholder="Enter author last name">
     </div>
     <div class="mb-3">
       <label for="genre" class="form-label">Genre:</label>
@@ -50,39 +50,18 @@
     <button type="submit" class="btn btn-primary">Search</button>
   </form>
 
-  <!-- Simplified Book Catalog -->
+  <!-- Dynamically generate book catalog -->
   <div id="booksContainer" class="row">
-    <div class="col-md-4 mb-4">
+    <div th:each="book : ${books}" class="col-md-4 mb-4">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Book Title</h5>
-          <p class="card-text">Author Name</p>
-          <p class="card-text"><small>Genre</small></p>
+          <h5 class="card-title" th:text="${book.title}">Book Title</h5>
+<!--          <p class="card-text" th:text="${book.author.firstName} + ' ' + ${book.author.lastName}">Author Name</p>-->
+<!--          <p class="card-text"><small th:text="${book.genre}">Genre</small></p>-->
           <button class="btn btn-success">Checkout</button>
         </div>
-
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Book Title</h5>
-          <p class="card-text">Author Name</p>
-          <p class="card-text"><small>Genre</small></p>
-          <button class="btn btn-success">Checkout</button>
-        </div>
-
-
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Book Title</h5>
-          <p class="card-text">Author Name</p>
-          <p class="card-text"><small>Genre</small></p>
-          <button class="btn btn-success">Checkout</button>
-        </div>
-
       </div>
     </div>
-    <!-- Repeat for each book or dynamically generate similar blocks -->
   </div>
 </div>
 

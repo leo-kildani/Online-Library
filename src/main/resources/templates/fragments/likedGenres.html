@@ -1,0 +1,17 @@
+<!-- Thymeleaf fragment, namespace defined in main template -->
+<div>
+    <div class="table-container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Genre Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="genre : ${likedGenres}">
+                <td th:text="${genre.name}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
