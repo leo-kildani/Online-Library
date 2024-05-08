@@ -8,6 +8,7 @@ import org.springframework.data.repository.Repository;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Genre;
 import com.example.demo.entity.Review;
+import com.example.demo.entity.User;
 
 public interface BookRepository extends Repository<Book, String> {
 
@@ -38,4 +39,6 @@ public interface BookRepository extends Repository<Book, String> {
     List<Book> findByAuthorId(int authorId);
 
     void bookIsGenres(Book book, List<Genre> genres);
+
+    List<Book> getUserBookRecommendations(User user);
 }

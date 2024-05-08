@@ -10,12 +10,15 @@ import com.example.demo.entity.Review;
 import com.example.demo.entity.User;
 
 public interface LibraryManagementSystemService {
-   
-    void addUser(String username, String password, String email, String firstName, String lastName, LocalDate dob, String role);
+
+    void addUser(String username, String password, String email, String firstName, String lastName, LocalDate dob,
+            String role);
 
     void updateUser(User user);
 
     User getUser(String username);
+
+    User getUserByEmail(String email);
 
     List<User> getUsers();
 
@@ -39,7 +42,8 @@ public interface LibraryManagementSystemService {
 
     void deleteAuthor(Author author);
 
-    void addBook(String isbn, String title, Author author, LocalDate publishDate, String description, List<Genre> genres);
+    void addBook(String isbn, String title, Author author, LocalDate publishDate, String description,
+            List<Genre> genres);
 
     void updateBook(Book book);
 
@@ -84,4 +88,6 @@ public interface LibraryManagementSystemService {
     void userUnlikesGenre(User user, Genre genre);
 
     void deleteGenre(Genre genre);
+
+    List<Book> getUserRecommendations(User user);
 }

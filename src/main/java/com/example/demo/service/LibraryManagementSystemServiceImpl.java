@@ -34,24 +34,30 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     @Autowired
     private AuthorRepository authorRepository;
 
-    @Autowired 
+    @Autowired
     private BookRepository bookRepository;
 
     @Autowired
     private ReviewRepository reviewRepository;
 
-    @Autowired 
+    @Autowired
     private BookCheckoutRepository bookCheckoutRepository;
 
     @Autowired
     private GenreRepository genreRepository;
 
     @Override
-    public void addUser(String username, String password, String email, String firstName, String lastName, LocalDate dob, String role) {
+    public void addUser(String username, String password, String email, String firstName, String lastName,
+            LocalDate dob, String role) {
         User newUser = new User(username, password, email, firstName, lastName, true, dob);
         userRepository.save(newUser);
         UserRole userRole = new UserRole(username, role);
         userRoleRepository.save(userRole);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override
@@ -63,7 +69,7 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     @Override
     public void addAuthor(String firstName, String lastName, String biography) {
         Author newAuthor = new Author(firstName, lastName, biography);
-        authorRepository.save(newAuthor);    
+        authorRepository.save(newAuthor);
     }
 
     @Override
@@ -73,7 +79,8 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
-    public void addBook(String isbn, String title, Author author, LocalDate publishDate, String description, List<Genre> genres) {
+    public void addBook(String isbn, String title, Author author, LocalDate publishDate, String description,
+            List<Genre> genres) {
         Book book = new Book(isbn, title, author.getAuthorId(), publishDate, description);
         bookRepository.save(book);
         bookRepository.bookIsGenres(book, genres);
@@ -86,8 +93,8 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
 
     @Override
     public void addBookCheckout(User user, Book book) {
-       BookCheckout bookCheckout = new BookCheckout(user.getUsername(), book.getIsbn()); 
-       bookCheckoutRepository.save(bookCheckout);
+        BookCheckout bookCheckout = new BookCheckout(user.getUsername(), book.getIsbn());
+        bookCheckoutRepository.save(bookCheckout);
     }
 
     @Override
@@ -253,5 +260,10 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     @Override
     public void deleteGenre(Genre genre) {
         genreRepository.delete(genre);
+    }
+
+    @Override
+    public List<Book> getUserRecommendations(User user) {
+        return bookRepository.getUserBookRecommendations(user);
     }
 }

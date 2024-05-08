@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Genre;
 import com.example.demo.entity.Review;
+import com.example.demo.entity.User;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -70,7 +71,7 @@ public class BookRepositoryImpl implements BookRepository {
     public List<Book> findLikeTitle(String title) {
         String queryString = "SELECT * FROM books B WHERE B.title LIKE :title";
         Query query = entityManager.createNativeQuery(queryString, Book.class);
-        query.setParameter("tite", "%" + title + "%");
+        query.setParameter("title", "%" + title + "%");
         return (List<Book>) query.getResultList();
     }
 
@@ -95,7 +96,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public int getBookStarRating(Book book) {
         String queryString = "SELECT ROUND(AVG(B.stars)) FROM user_rates_book B WHERE B.isbn = :isbn";
-        Query query = entityManager.createNativeQuery(queryString, Integer.class); 
+        Query query = entityManager.createNativeQuery(queryString, Integer.class);
         query.setParameter("isbn", book.getIsbn());
         return (Integer) query.getSingleResult();
     }
@@ -122,8 +123,8 @@ public class BookRepositoryImpl implements BookRepository {
     public boolean checkBookAvailable(Book book) {
         String queryString = "SELECT COUNT(*) > 0 FROM book_checkouts WHERE isbn = :isbn";
         Query query = entityManager
-            .createNativeQuery(queryString)
-            .setParameter("isbn", book.getIsbn());
+                .createNativeQuery(queryString)
+                .setParameter("isbn", book.getIsbn());
         return (boolean) query.getSingleResult();
     }
 
@@ -139,9 +140,18 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public void bookIsGenres(Book book, List<Genre> genres) {
         String insertString = "INSERT INTO book_is_genre (isbn, genre_name) VALUES (?, ?)";
-        for (Genre genre: genres) {
+        for (Genre genre : genres) {
             jdbcTemplate.update(insertString, book.getIsbn(), genre.getName());
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Book> getUserBookRecommendations(User user) {
+        String queryString = " (SELECT b.* FROM books b JOIN authors a ON b.author_id = a.author_id JOIN user_favorites_author ufa ON a.author_id = ufa.author_id WHERE ufa.username = :username ORDER BY b.publish_date DESC LIMIT 5) UNION (SELECT b.* FROM books b JOIN book_is_genre big ON b.isbn = big.isbn JOIN user_likes_genres ulg ON big.genre_name = ulg.genre_name WHERE ulg.username = :username ORDER BY RAND() LIMIT 5);";
+        Query query = entityManager
+            .createNativeQuery(queryString, Book.class)
+            .setParameter("username", user.getUsername());
+        return (List<Book>) query.getResultList();
+    }
 }
