@@ -70,7 +70,7 @@ public class BookRepositoryImpl implements BookRepository {
     public List<Book> findLikeTitle(String title) {
         String queryString = "SELECT * FROM books B WHERE B.title LIKE :title";
         Query query = entityManager.createNativeQuery(queryString, Book.class);
-        query.setParameter("tite", "%" + title + "%");
+        query.setParameter("title", "%" + title + "%");
         return (List<Book>) query.getResultList();
     }
 
@@ -95,7 +95,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public int getBookStarRating(Book book) {
         String queryString = "SELECT ROUND(AVG(B.stars)) FROM user_rates_book B WHERE B.isbn = :isbn";
-        Query query = entityManager.createNativeQuery(queryString, Integer.class); 
+        Query query = entityManager.createNativeQuery(queryString, Integer.class);
         query.setParameter("isbn", book.getIsbn());
         return (Integer) query.getSingleResult();
     }
@@ -122,8 +122,8 @@ public class BookRepositoryImpl implements BookRepository {
     public boolean checkBookAvailable(Book book) {
         String queryString = "SELECT COUNT(*) > 0 FROM book_checkouts WHERE isbn = :isbn";
         Query query = entityManager
-            .createNativeQuery(queryString)
-            .setParameter("isbn", book.getIsbn());
+                .createNativeQuery(queryString)
+                .setParameter("isbn", book.getIsbn());
         return (boolean) query.getSingleResult();
     }
 
@@ -139,7 +139,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public void bookIsGenres(Book book, List<Genre> genres) {
         String insertString = "INSERT INTO book_is_genre (isbn, genre_name) VALUES (?, ?)";
-        for (Genre genre: genres) {
+        for (Genre genre : genres) {
             jdbcTemplate.update(insertString, book.getIsbn(), genre.getName());
         }
     }
