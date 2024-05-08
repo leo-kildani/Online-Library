@@ -10,8 +10,9 @@ import com.example.demo.entity.Review;
 import com.example.demo.entity.User;
 
 public interface LibraryManagementSystemService {
-   
-    void addUser(String username, String password, String email, String firstName, String lastName, LocalDate dob, String role);
+
+    void addUser(String username, String password, String email, String firstName, String lastName, LocalDate dob,
+            String role);
 
     void updateUser(User user);
 
@@ -39,9 +40,8 @@ public interface LibraryManagementSystemService {
 
     void deleteAuthor(Author author);
 
-    List<Book> getUserCheckedBooks(User user);
-
-    void addBook(String isbn, String title, Author author, LocalDate publishDate, String description, List<Genre> genres);
+    void addBook(String isbn, String title, Author author, LocalDate publishDate, String description,
+            List<Genre> genres);
 
     void updateBook(Book book);
 
@@ -55,7 +55,7 @@ public interface LibraryManagementSystemService {
 
     List<Book> getBooksByPublishDate(LocalDate date);
 
-    List<Book> getBookByAppliedFilters(String title, String authorLastName, String genre, LocalDate publishDate);
+    List<Book> getBookByAppliedFilters(String title, String authorLastName, Genre genre, LocalDate publishDate);
 
     int getBookStarRating(Book book);
 
@@ -86,4 +86,6 @@ public interface LibraryManagementSystemService {
     void userUnlikesGenre(User user, Genre genre);
 
     void deleteGenre(Genre genre);
+
+    List<Book> getUserRecommendations(User user);
 }
