@@ -8,7 +8,8 @@ CREATE TABLE users (
     `last_name` VARCHAR(64),
     `active` TINYINT(1),
     `dob` DATE,
-    PRIMARY KEY (`username`)
+    PRIMARY KEY (`username`),
+    INDEX idx_first_last_name (`first_name`, `last_name`)
 );
 
 CREATE TABLE user_roles (
@@ -16,7 +17,8 @@ CREATE TABLE user_roles (
     `username` VARCHAR(64) NOT NULL,
     `role` VARCHAR(64) NOT NULL,
     PRIMARY KEY (`role_id`),
-    FOREIGN KEY (`username`) REFERENCES users(`username`) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (`username`) REFERENCES users(`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+    INDEX idx_username_role (`username`, `role`)
 );
 
 CREATE TABLE authors (
@@ -24,7 +26,8 @@ CREATE TABLE authors (
     `first_name` VARCHAR(64) NOT NULL,
     `last_name` VARCHAR(64) NOT NULL,
     `biography` VARCHAR(512) NOT NULL,
-    PRIMARY KEY (`author_id`)
+    PRIMARY KEY (`author_id`),
+    INDEX idx_author_name (`first_name`, `last_name`)
 );
 
 CREATE TABLE genres (
@@ -38,9 +41,12 @@ CREATE TABLE books (
     `title` VARCHAR(64) NOT NULL,
     `author_id` INT NOT NULL,
     `publish_date` DATE NOT NULL,
-    `description` VARCHAR(512), 
+    `description` VARCHAR(512),
     PRIMARY KEY (`isbn`),
-    FOREIGN KEY (`author_id`) REFERENCES authors(`author_id`) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (`author_id`) REFERENCES authors(`author_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    INDEX idx_title (`title`),
+    INDEX idx_author (`author_id`),
+    INDEX idx_author_title (`author_id`, `title`)
 );
 
 CREATE TABLE reviews (
@@ -51,7 +57,9 @@ CREATE TABLE reviews (
     `isbn` CHAR(13) NOT NULL,
     PRIMARY KEY (`review_id`),
     FOREIGN KEY (`username`) REFERENCES users(`username`) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (`isbn`) REFERENCES books(`isbn`) ON DELETE CASCADE
+    FOREIGN KEY (`isbn`) REFERENCES books(`isbn`) ON DELETE CASCADE,
+    INDEX idx_username (`username`),
+    INDEX idx_isbn (`isbn`)
 );
 
 CREATE TABLE book_checkouts (
@@ -61,7 +69,9 @@ CREATE TABLE book_checkouts (
     `checkout_date` DATE NOT NULL,
     PRIMARY KEY (`checkout_id`),
     FOREIGN KEY (`username`) REFERENCES users(`username`) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (`isbn`) REFERENCES books(`isbn`) ON DELETE CASCADE ON UPDATE CASCADE 
+    FOREIGN KEY (`isbn`) REFERENCES books(`isbn`) ON DELETE CASCADE ON UPDATE CASCADE,
+    INDEX idx_username_isbn (`username`, `isbn`),
+    INDEX idx_isbn_checkout_date (`isbn`, `checkout_date`)
 );
 
 CREATE TABLE user_favorites_author (
@@ -86,7 +96,8 @@ CREATE TABLE user_rates_book (
     `stars` TINYINT,
     PRIMARY KEY (`username`, `isbn`),
     FOREIGN KEY (`username`) REFERENCES users(`username`) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (`isbn`) REFERENCES books(`isbn`) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (`isbn`) REFERENCES books(`isbn`) ON DELETE CASCADE ON UPDATE CASCADE,
+    INDEX idx_isbn_stars (`isbn`, `stars`)
 );
 
 CREATE TABLE book_is_genre (
