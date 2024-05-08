@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Genre;
 import com.example.demo.entity.Review;
+import com.example.demo.entity.User;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -144,4 +145,12 @@ public class BookRepositoryImpl implements BookRepository {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Book> getUserBookRecommendations(User user) {
+        String queryString = "SELECT * FROM books B WHERE B.author_id IN (SELECT author_id FROM authors WHERE author_id IN (SELECT author_id FROM user_likes_author WHERE user_id = :user_id) ORDER BY publish_date DESC LIMIT 5) UNION SELECT * FROM books B WHERE B.genre_name IN (SELECT genre_name FROM user_likes_genre WHERE user_id = :user_id) ORDER BY RAND() LIMIT 5";
+        Query query = entityManager.createNativeQuery(queryString, Book.class);
+        query.setParameter("user_id", user.getUsername());
+        return (List<Book>) query.getResultList();
+    }
 }
