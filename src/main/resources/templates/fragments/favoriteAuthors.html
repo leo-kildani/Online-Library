@@ -1,0 +1,17 @@
+<!-- Thymeleaf fragment, namespace defined in main template -->
+<div>
+    <div class="table-container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Author Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="author : ${favAuthors}">
+                <td th:text="${author.firstName} + ' ' + ${author.lastName}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

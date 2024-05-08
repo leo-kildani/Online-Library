@@ -211,6 +211,11 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
+    public List<Book> getUserCheckedBooks(User user) {
+        return userRepository.getUserCheckedBooks(user);
+    }
+
+    @Override
     public void userFavoritesAuthor(User user, Author author) {
         userRepository.userFavoritesAuthor(user, author);
     }

@@ -1,0 +1,17 @@
+<!-- Thymeleaf fragment, namespace defined in main template -->
+<div>
+    <div class="table-container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Book Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${borrowedBooks}">
+                <td th:text="${book.title} "></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
