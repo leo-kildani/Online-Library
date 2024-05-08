@@ -37,7 +37,7 @@ CREATE TABLE genres (
 );
 
 CREATE TABLE books (
-    `isbn` CHAR(13),
+    `isbn` CHAR(20),
     `title` VARCHAR(64) NOT NULL,
     `author_id` INT NOT NULL,
     `publish_date` DATE NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE reviews (
     `content` VARCHAR(512) NOT NULL,
     `username` VARCHAR(64) NOT NULL,
     `publish_date` DATE NOT NULL,
-    `isbn` CHAR(13) NOT NULL,
+    `isbn` CHAR(20) NOT NULL,
     PRIMARY KEY (`review_id`),
     FOREIGN KEY (`username`) REFERENCES users(`username`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`isbn`) REFERENCES books(`isbn`) ON DELETE CASCADE,
@@ -65,7 +65,7 @@ CREATE TABLE reviews (
 CREATE TABLE book_checkouts (
     `checkout_id` INT AUTO_INCREMENT,
     `username` VARCHAR(64) NOT NULL,
-    `isbn` CHAR(13) NOT NULL,
+    `isbn` CHAR(20) NOT NULL,
     `checkout_date` DATE NOT NULL,
     PRIMARY KEY (`checkout_id`),
     FOREIGN KEY (`username`) REFERENCES users(`username`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -92,7 +92,7 @@ CREATE TABLE user_likes_genres (
 
 CREATE TABLE user_rates_book (
     `username` VARCHAR(64),
-    `isbn` CHAR(13),
+    `isbn` CHAR(20),
     `stars` TINYINT,
     PRIMARY KEY (`username`, `isbn`),
     FOREIGN KEY (`username`) REFERENCES users(`username`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -101,7 +101,7 @@ CREATE TABLE user_rates_book (
 );
 
 CREATE TABLE book_is_genre (
-    `isbn` CHAR(13),
+    `isbn` CHAR(20),
     `genre_name` VARCHAR(64),
     PRIMARY KEY (`isbn`, `genre_name`),
     FOREIGN KEY (`isbn`) REFERENCES books(`isbn`) ON DELETE CASCADE ON UPDATE CASCADE,
