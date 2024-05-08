@@ -13,7 +13,7 @@
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="signup.html">Sign Up</a>
+                            <a class="nav-link" th:href="@{/signupForm}">Sign Up</a>
                         </li>
                     </ul>
                 </div>
@@ -39,6 +39,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Log In</button>
                 <div th:if="${err}" th:text="${err}" class="text-danger"></div>
+                <div th:if="${msg}" th:text="${msg}" class="text-success"></div>
             </form>
         </div>
 

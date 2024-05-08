@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Signup Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Library</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto"> <!-- Modified class from "ms-auto" to "ml-auto" -->
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/loginPage}">Log In</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+
+        <h2 class="text-center">Signup Form</h2>
+        <form action="/signup" th:action="@{/signupForm}" method="POST" class="mx-auto" style="max-width: 400px;">
+            <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control form-control-sm" id="username" name="username" required>
+            <div th:if="${err}" th:text="${err}" class="text-danger"></div>
+            </div>
+            
+            <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control form-control-sm" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control form-control-sm" id="password" name="password" required>
+            </div>
+            
+            <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input type="text" class="form-control form-control-sm" id="firstName" name="firstName" required>
+            </div>
+            
+            <div class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input type="text" class="form-control form-control-sm" id="lastName" name="lastName" required>
+            </div>
+            
+            <div class="form-group">
+            <label for="dob">Date of Birth:</label>
+            <input type="date" class="form-control form-control-sm" id="dob" name="dob" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
