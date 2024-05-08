@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "books")
 @NoArgsConstructor
 @AllArgsConstructor
-public @Data class Book {
+public @Data class  Book {
 
     @Id
     @Column(name = "isbn")

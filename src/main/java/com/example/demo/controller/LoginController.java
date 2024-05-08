@@ -32,7 +32,7 @@ public class LoginController {
         User foundUser = service.getUser(username);
         if (foundUser != null && foundUser.getPassword().trim().equals(password.trim())) {
             currentUser.setCurrentUser(foundUser);
-            return "userprofile";
+            return "redirect:/userprofile";
         } else {
             redirectAttributes.addFlashAttribute("err", "Invalid Username or Password");
             return "redirect:/loginPage";
