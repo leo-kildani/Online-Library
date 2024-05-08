@@ -18,6 +18,8 @@ public interface LibraryManagementSystemService {
 
     User getUser(String username);
 
+    User getUserByEmail(String email);
+
     List<User> getUsers();
 
     List<User> getUsersBySimilarUsername(String username);

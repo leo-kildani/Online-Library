@@ -56,6 +56,11 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     public void deleteUser(User user) {
         userRepository.delete(user);
         userRoleRepository.findByUsername(user.getUsername()).forEach(u -> userRoleRepository.delete(u));

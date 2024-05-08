@@ -43,6 +43,15 @@ public class UserRepositoryImpl implements UserRepository {
         return entityManager.find(User.class, username);
     }
 
+    @Override
+    public User findByEmail(String email) {
+        String queryString = "SELECT * FROM users U WHERE U.email = :email";
+        Query query = entityManager
+                .createNativeQuery(queryString, User.class)
+                .setParameter("email", email);
+        return (User) query.getSingleResult();
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public List<User> findLikeUsername(String username) {
