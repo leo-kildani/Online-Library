@@ -42,3 +42,18 @@ $(document).ready(function(){
         }
     });
 });
+
+//for recommendations tab
+$(document).ready(function(){
+    $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var target = $(e.target).attr("href"); // activated tab
+        if(target === "#recs") {
+            $.ajax({
+                url: "/userprofile/recommendations",
+                success: function(result) {
+                    $("#recs").html(result);
+                }
+            });
+        }
+    });
+});

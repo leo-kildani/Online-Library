@@ -77,10 +77,11 @@ public class BookRepositoryImpl implements BookRepository {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Book> findByGenre(String genre) {
-        String queryString = "SELECT * FROM books B WHERE B.genre_name = :genre";
-        Query query = entityManager.createNativeQuery(queryString, Book.class);
-        query.setParameter("genre", genre);
+    public List<Book> findByGenre(String genreName) {
+        String queryString = "SELECT B.* FROM books B INNER JOIN book_is_genre BG ON B.isbn = BG.isbn WHERE BG.genre_name = :genreName";
+        Query query = entityManager
+                .createNativeQuery(queryString, Book.class)
+                .setParameter("genreName", genreName);
         return (List<Book>) query.getResultList();
     }
 

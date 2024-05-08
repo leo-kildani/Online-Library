@@ -45,6 +45,10 @@
                                   @RequestParam(required = false) String author,
                                   @RequestParam(required = false) String genre,
                                   Model model) {
+
+            //convert empty genre string to null
+            genre = (genre != null && !genre.isEmpty()) ? genre : null;
+
             List<Book> books = libService.getBookByAppliedFilters(title, author, genre, null);
             model.addAttribute("books", books);
             logger.info("Retrieved Books: " + books);

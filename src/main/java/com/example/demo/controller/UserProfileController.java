@@ -74,13 +74,13 @@ public class UserProfileController {
         return "fragments/borrowedBooks";
     }
 
-//    @GetMapping("/userprofile/recommendationss")
-//    public String getRecs(Model model) {
-//        User user = currentUser.getCurrentUser();
-//        logger.info("Current User: " + user.getUsername());
-//        List<Book> books = libService.getUserCheckedBooks(user);
-//        model.addAttribute("borrowedBooks", books);
-//        logger.info("Returning books: " + books);
-//        return "fragments/borrowedBooks";
-//    }
+    @GetMapping("/userprofile/recommendations")
+    public String getRecs(Model model) {
+        User user = currentUser.getCurrentUser();
+        logger.info("Current User: " + user.getUsername());
+        List<Book> recs = libService.getUserRecommendations(user);
+        model.addAttribute("recs", recs);
+        logger.info("Returning recs: " + recs);
+        return "fragments/recommendations";
+    }
 }

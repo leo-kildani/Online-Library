@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,39 +50,18 @@
     <button type="submit" class="btn btn-primary">Search</button>
   </form>
 
-  <!-- Simplified Book Catalog -->
+  <!-- Dynamically generate book catalog -->
   <div id="booksContainer" class="row">
-    <div class="col-md-4 mb-4">
+    <div th:each="book : ${books}" class="col-md-4 mb-4">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Book Title</h5>
-          <p class="card-text">Author Name</p>
-          <p class="card-text"><small>Genre</small></p>
+          <h5 class="card-title" th:text="${book.title}">Book Title</h5>
+<!--          <p class="card-text" th:text="${book.author.firstName} + ' ' + ${book.author.lastName}">Author Name</p>-->
+<!--          <p class="card-text"><small th:text="${book.genre}">Genre</small></p>-->
           <button class="btn btn-success">Checkout</button>
         </div>
-
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Book Title</h5>
-          <p class="card-text">Author Name</p>
-          <p class="card-text"><small>Genre</small></p>
-          <button class="btn btn-success">Checkout</button>
-        </div>
-
-
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Book Title</h5>
-          <p class="card-text">Author Name</p>
-          <p class="card-text"><small>Genre</small></p>
-          <button class="btn btn-success">Checkout</button>
-        </div>
-
       </div>
     </div>
-    <!-- Repeat for each book or dynamically generate similar blocks -->
   </div>
 </div>
 

@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.controller.CatalogController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +48,8 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
 
     @Autowired
     private GenreRepository genreRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(LibraryManagementSystemServiceImpl.class);
 
     @Override
     public void addUser(String username, String password, String email, String firstName, String lastName,
@@ -160,19 +165,40 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
 
     @Override
     public List<Book> getBookByAppliedFilters(String title, String authorLastName, String genre, LocalDate publishDate) {
-        List<Book> result = new ArrayList<>();
+        List<Book> result = null;
+
         if (title != null) {
-            result.retainAll(bookRepository.findLikeTitle(title));
+            List<Book> titleResults = bookRepository.findLikeTitle(title);
+            result = (result == null) ? titleResults : intersect(result, titleResults);
         }
         if (authorLastName != null) {
-            result.retainAll(bookRepository.findByAuthorLastName(authorLastName));
+            List<Book> authorResults = bookRepository.findByAuthorLastName(authorLastName);
+            logger.info("books inside authorLastName if: " + authorResults);
+            result = (result == null) ? authorResults : intersect(result, authorResults);
         }
+
+        logger.info("result after name: " + result);
         if (genre != null) {
-            result.retainAll(bookRepository.findByGenre(genre));
+            List<Book> genreResults = bookRepository.findByGenre(genre);
+            result = (result == null) ? genreResults : intersect(result, genreResults);
         }
+
+        logger.info("result after genre: " + result);
+
         if (publishDate != null) {
-            result.retainAll(bookRepository.findByPublishDate(publishDate));
+            List<Book> dateResults = bookRepository.findByPublishDate(publishDate);
+            result = (result == null) ? dateResults : intersect(result, dateResults);
         }
+
+        logger.info("result after publish: " + result);
+
+        return (result != null) ? result : new ArrayList<>();
+    }
+
+    // Helper method to intersect two lists
+    private List<Book> intersect(List<Book> list1, List<Book> list2) {
+        List<Book> result = new ArrayList<>(list1);
+        result.retainAll(list2);
         return result;
     }
 
@@ -210,11 +236,6 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     @Override
     public List<Author> getUserFavoriteAuthor(User user) {
         return userRepository.getUserFavoriteAuthors(user);
-    }
-
-    @Override
-    public List<Book> getUserCheckedBooks(User user) {
-        return userRepository.getUserCheckedBooks(user);
     }
 
     @Override
@@ -265,5 +286,10 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     @Override
     public List<Book> getUserRecommendations(User user) {
         return bookRepository.getUserBookRecommendations(user);
+    }
+
+    @Override
+    public List<Book> getUserCheckedBooks(User user) {
+        return userRepository.getUserCheckedBooks(user);
     }
 }
