@@ -106,6 +106,7 @@
             int userRating = libService.getUserBookRating(currentUser.getCurrentUser(), book);
             double overallRating = Math.round(libService.getBookStarRating(book) * 10) / 10.0;
             List<Review> reviews = libService.getBookReviews(book);
+            int remainingCopies = book.getCopies() - libService.findCheckoutByIsbn(book.getIsbn()).size();
             logger.info("bookDetails genres:" + genres);
 
             model.addAttribute("book", book);
@@ -114,6 +115,7 @@
             model.addAttribute("userRating", userRating);
             model.addAttribute("overallRating", overallRating);
             model.addAttribute("reviews", reviews);
+            model.addAttribute("remainingCopies", remainingCopies);
 
             return "bookDetails"; // Name of the Thymeleaf template for book details
         }
