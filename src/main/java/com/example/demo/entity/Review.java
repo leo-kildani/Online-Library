@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public @Data class Review {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
     private int reviewId;
 

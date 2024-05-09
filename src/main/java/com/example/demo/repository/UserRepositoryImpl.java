@@ -49,7 +49,8 @@ public class UserRepositoryImpl implements UserRepository {
         Query query = entityManager
                 .createNativeQuery(queryString, User.class)
                 .setParameter("email", email);
-        return (User) query.getSingleResult();
+        List<User> result = (List<User>) query.getResultList();
+        return result.isEmpty() ? null : result.get(0);
     }
 
     @SuppressWarnings("unchecked")

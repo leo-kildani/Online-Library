@@ -55,7 +55,8 @@ public class BookRepositoryImpl implements BookRepository {
         String queryString = "SELECT * FROM books B WHERE B.isbn = :isbn";
         Query query = entityManager.createNativeQuery(queryString, Book.class);
         query.setParameter("isbn", isbn);
-        return (Book) query.getSingleResult();
+        List<Book> result = (List<Book>) query.getResultList();
+        return result.isEmpty() ? null : result.get(0);
     }
 
     @SuppressWarnings("unchecked")
@@ -100,7 +101,8 @@ public class BookRepositoryImpl implements BookRepository {
         String queryString = "SELECT ROUND(AVG(B.stars)) FROM user_rates_book B WHERE B.isbn = :isbn";
         Query query = entityManager.createNativeQuery(queryString, Integer.class);
         query.setParameter("isbn", book.getIsbn());
-        return (Integer) query.getSingleResult();
+        List<Integer> result = (List<Integer>) query.getResultList();
+        return result.isEmpty() ? 0 : result.get(0).intValue();
     }
 
     @SuppressWarnings("unchecked")
@@ -125,9 +127,10 @@ public class BookRepositoryImpl implements BookRepository {
     public boolean checkBookAvailable(Book book) {
         String queryString = "SELECT COUNT(*) > 0 FROM book_checkouts WHERE isbn = :isbn";
         Query query = entityManager
-                .createNativeQuery(queryString)
+                .createNativeQuery(queryString, Boolean.class)
                 .setParameter("isbn", book.getIsbn());
-        return (boolean) query.getSingleResult();
+        List<Boolean> result = (List<Boolean>) query.getResultList();
+        return result.isEmpty() ? false : result.get(0).booleanValue();
     }
 
     @SuppressWarnings("unchecked")
@@ -175,7 +178,8 @@ public class BookRepositoryImpl implements BookRepository {
                 "WHERE B.isbn = :isbn";
         Query query = entityManager.createNativeQuery(queryString, Author.class);
         query.setParameter("isbn", book.getIsbn());
-        return (Author) query.getSingleResult();
+        List<Author> result = (List<Author>) query.getResultList();
+        return result.isEmpty() ? null : result.get(0);
     }
 
 }
