@@ -14,12 +14,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 @Controller
 public class UserProfileController {
-    
+
     private final LibraryManagementSystemService libService;
-    
+
     @Autowired
     public UserProfileController(LibraryManagementSystemService libService) {
         this.libService = libService;
@@ -36,7 +35,8 @@ public class UserProfileController {
 
         if (user != null) {
             model.addAttribute("user", user);
-//            model.addAttribute("userRole", libService.findByUsername(user.getUsername()));
+            // model.addAttribute("userRole",
+            // libService.findByUsername(user.getUsername()));
         } else {
             return "redirect:/login";
         }
