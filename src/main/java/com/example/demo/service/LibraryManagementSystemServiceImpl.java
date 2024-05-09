@@ -170,10 +170,7 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
-    public List<Book> getBookByAppliedFilters(String title, String authorLastName, String genre/*
-                                                                                                * , LocalDate
-                                                                                                * publishDate
-                                                                                                */) {
+    public List<Book> getBookByAppliedFilters(String title, String authorLastName, String genre) {
         List<Book> result = null;
 
         if (title != null && !title.isEmpty()) {
@@ -196,13 +193,6 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
         }
 
         logger.info("result after genre: " + result);
-        //
-        // if (publishDate != null && !publishDate.isEmpty()) {
-        // List<Book> dateResults = bookRepository.findByPublishDate(publishDate);
-        // result = (result == null) ? dateResults : intersect(result, dateResults);
-        // }
-        //
-        // logger.info("result after publish: " + result);
 
         return (result != null) ? result : new ArrayList<>();
     }
@@ -215,7 +205,7 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
-    public int getBookStarRating(Book book) {
+    public double getBookStarRating(Book book) {
         return bookRepository.getBookStarRating(book);
     }
 
@@ -327,7 +317,13 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
-    public List<Book> getBookByAuthorId(int id) {
-        return bookRepository.findByAuthorId(id);
+    public List<Book> getBookByAuthorId(int id) { return bookRepository.findByAuthorId(id); }
+
+    @Override
+    public void userRatesBook(User user, Book book, int stars) { userRepository.userRatesBook(user, book, stars); }
+
+    @Override
+    public int getUserBookRating(User user, Book book) {
+        return userRepository.getUserBookRating(user, book);
     }
 }

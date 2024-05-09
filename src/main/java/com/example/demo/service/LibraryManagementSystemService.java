@@ -60,7 +60,7 @@ public interface LibraryManagementSystemService {
 
     List<Book> getBookByAppliedFilters(String title, String authorLastName, String genre/*, LocalDate publishDate*/);
 
-    int getBookStarRating(Book book);
+    double getBookStarRating(Book book);
 
     boolean checkBookAvailable(Book book);
 
@@ -103,4 +103,8 @@ public interface LibraryManagementSystemService {
     Optional<Author> getAuthorById(int id);
 
     List<Book> getBookByAuthorId(int id);
+
+    void userRatesBook(User user, Book book, int stars);
+
+    int getUserBookRating(User user, Book book);
 }

@@ -182,4 +182,20 @@ public class UserRepositoryImpl implements UserRepository {
                 .setParameter("username", user.getUsername());
         return (List<Author>) query.getResultList();
     }
+
+    @Override
+    public int getUserBookRating(User user, Book book) {
+        String queryString = "SELECT stars FROM user_rates_book WHERE username = :username AND isbn = :isbn";
+        Query query = entityManager.createNativeQuery(queryString)
+                .setParameter("username", user.getUsername())
+                .setParameter("isbn", book.getIsbn());
+
+        List<?> results = query.getResultList();
+        if (!results.isEmpty()) {
+            Number rating = (Number) results.get(0);
+            return rating.intValue();
+        }
+        return 0;  //no rating found
+    }
+
 }
