@@ -29,7 +29,7 @@ public interface BookRepository extends Repository<Book, String> {
 
     List<Book> findByPublishDate(LocalDate publishDate);
 
-    int getBookStarRating(Book book);
+    double getBookStarRating(Book book);
 
     List<Genre> getBookGenres(Book book);
 

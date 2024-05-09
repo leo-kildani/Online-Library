@@ -67,10 +67,10 @@
 
 
     <div class="rating-container">
-        <h3>Rate this book:</h3>
+        <h3>Ratings:</h3>
         <form th:action="@{/rate(isbn=${book.isbn})}" method="post">
             <div class="form-group">
-                <label for="rating">Rating:</label>
+                <label for="rating">Rate this Book:</label>
                 <select id="rating" name="rating" class="form-control">
                     <option value="5">5 Stars</option>
                     <option value="4">4 Stars</option>
@@ -81,6 +81,43 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit Rating</button>
         </form>
+
+        <!-- Rating Display Card -->
+        <div class="card my-4">
+            <div class="card-body">
+                <h5 class="card-title">Your Current Rating:</h5>
+                <p class="card-text" th:text="${userRating == 0 ? 'Unrated' : userRating + ' Stars'}"></p>
+            </div>
+        </div>
+
+        <!-- Overall Rating Display Card -->
+        <div class="card my-4">
+            <div class="card-body">
+                <h5 class="card-title">Current Overall Rating:</h5>
+                <p class="card-text" th:text="${overallRating == 0.0 ? 'Unrated' : overallRating + ' Stars'}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="review-container">
+        <h3>Reviews</h3>
+        <form th:action="@{/submitReview(isbn=${book.isbn})}" method="post">
+            <div class="form-group">
+                <label for="reviewContent">Write a Review:</label>
+                <textarea id="reviewContent" name="reviewContent" class="form-control" placeholder="Enter your review here..."></textarea>
+                <button type="submit" class="btn btn-primary mt-2">Submit Review</button>
+            </div>
+        </form>
+
+        <div th:each="review : ${reviews}">
+            <div class="card my-2">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${review.username}">Username</h5>
+                    <h6 class="card-subtitle mb-2 text-muted" th:text="${#dates.format(review.publishDate, 'yyyy-MM-dd')}">Publish Date</h6>
+                    <p class="card-text" th:text="${review.content}">Review Content</p>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>

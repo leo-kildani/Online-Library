@@ -4,6 +4,7 @@
     import com.example.demo.entity.Book;
     import com.example.demo.entity.Genre;
     import com.example.demo.entity.Author;
+    import com.example.demo.entity.Review;
     import com.example.demo.service.LibraryManagementSystemService;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.stereotype.Controller;
@@ -105,11 +106,17 @@ import java.util.List;
             Book book = libService.getBook(isbn);
             Author author = libService.getAuthorByBook(book);
             List<Genre> genres = libService.getGenreByBook(book);
+            int userRating = libService.getUserBookRating(currentUser.getCurrentUser(), book);
+            double overallRating = Math.round(libService.getBookStarRating(book) * 10) / 10.0;
+            List<Review> reviews = libService.getBookReviews(book);
             logger.info("bookDetails genres:" + genres);
 
             model.addAttribute("book", book);
             model.addAttribute("author", author);
             model.addAttribute("genres", genres);
+            model.addAttribute("userRating", userRating);
+            model.addAttribute("overallRating", overallRating);
+            model.addAttribute("reviews", reviews);
 
             return "bookDetails"; // Name of the Thymeleaf template for book details
         }

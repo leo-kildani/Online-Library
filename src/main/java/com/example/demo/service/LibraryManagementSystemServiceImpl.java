@@ -204,7 +204,7 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
-    public int getBookStarRating(Book book) {
+    public double getBookStarRating(Book book) {
         return bookRepository.getBookStarRating(book);
     }
 
@@ -317,4 +317,9 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
 
     @Override
     public void userRatesBook(User user, Book book, int stars) { userRepository.userRatesBook(user, book, stars); }
+
+    @Override
+    public int getUserBookRating(User user, Book book) {
+        return userRepository.getUserBookRating(user, book);
+    }
 }
