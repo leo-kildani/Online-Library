@@ -1,6 +1,5 @@
     package com.example.demo.controller;
 
-    import com.example.demo.entity.User;
     import com.example.demo.entity.Book;
     import com.example.demo.entity.Genre;
     import com.example.demo.entity.Author;
@@ -11,9 +10,9 @@
     import org.springframework.ui.Model;
     import org.springframework.web.bind.annotation.GetMapping;
     import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+    import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
+    import java.util.List;
     import java.util.ArrayList;
     import java.util.Optional;
 
@@ -34,17 +33,14 @@ import java.util.List;
 
         @GetMapping("/catalog")
         public String loadPage(Model model) {
-            User user = currentUser.getCurrentUser();
-
-            if (user != null) {
-                model.addAttribute("user", user);
+            if (currentUser.checkUser()) {
+                model.addAttribute("user", currentUser.getCurrentUser());
     //            model.addAttribute("userRole", libService.findByUsername(user.getUsername()));
             } else {
                 return "redirect:/loginPage";
             }
 
             List<Genre> genres = libService.getAllGenres();
-            logger.info("retrieved genres:" + genres);
             model.addAttribute("genres", genres);
 
             return "catalog";
@@ -61,10 +57,9 @@ import java.util.List;
                     genre.orElse(null));
 
             model.addAttribute("books", books);
-            logger.info("Retrieved Books: " + books);
+            model.addAttribute("service", libService);
 
             List<Genre> genres = libService.getAllGenres();
-            logger.info("retrieved genres:" + genres);
             model.addAttribute("genres", genres);
 
             List<Genre> resultGenres = new ArrayList<Genre>();
@@ -96,7 +91,6 @@ import java.util.List;
                 bookGenres.add(libService.getGenreByBook(book).get(0));
             });
             model.addAttribute("bookGenres", bookGenres);
-            logger.info("bookGenres:" + bookGenres);
 
             return "authorDetails"; // Name of the Thymeleaf template for author details
         }
@@ -126,4 +120,18 @@ import java.util.List;
             redirectAttributes.addFlashAttribute("logoutMessage", "You have been logged out successfully");
             return "redirect:/loginPage";
         }
+
+        @GetMapping("/catalog/checkout")
+        public String checkoutBook(@RequestParam("isbn") String isbn, RedirectAttributes redirectAttributes) {
+            Book book = libService.getBook(isbn);
+            if (!libService.checkBookAvailable(book)) {
+                redirectAttributes.addFlashAttribute("checkoutMessage", "Book is not available for checkout");
+                logger.info(book.toString());
+                logger.info(String.valueOf(libService.checkBookAvailable(book)));
+                return "redirect:/catalog/search";
+            }
+            redirectAttributes.addFlashAttribute("book", book);
+            return "redirect:/checkoutBook";
+        }
+        
     }

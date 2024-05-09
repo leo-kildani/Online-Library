@@ -103,7 +103,8 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
-    public void deleteBookCheckout(BookCheckout bookCheckout) {
+    public void deleteBookCheckout(User user, Book book) {
+        BookCheckout bookCheckout = bookCheckoutRepository.findByIsbnAndUsername(book.getIsbn(), user.getUsername());
         bookCheckoutRepository.delete(bookCheckout);
     }
 
@@ -210,7 +211,8 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
 
     @Override
     public boolean checkBookAvailable(Book book) {
-        return bookRepository.checkBookAvailable(book);
+        int copiesCheckedOut = bookCheckoutRepository.findByIsbn(book.getIsbn()).size();
+        return copiesCheckedOut < book.getCopies();
     }
 
     @Override
@@ -310,7 +312,9 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
-    public Optional<Author> getAuthorById(int id) { return authorRepository.findById(id); }
+    public Optional<Author> getAuthorById(int id) {
+        return authorRepository.findById(id);
+    }
 
     @Override
     public List<Book> getBookByAuthorId(int id) { return bookRepository.findByAuthorId(id); }

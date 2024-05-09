@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import com.example.demo.entity.Author;
 import com.example.demo.entity.Book;
-import com.example.demo.entity.BookCheckout;
 import com.example.demo.entity.Genre;
 import com.example.demo.entity.Review;
 import com.example.demo.entity.User;
@@ -69,7 +68,7 @@ public interface LibraryManagementSystemService {
 
     void addBookCheckout(User user, Book book);
 
-    void deleteBookCheckout(BookCheckout bookCheckout);
+    void deleteBookCheckout(User user, Book book);
 
     void addReview(String content, User user, Book book);
 

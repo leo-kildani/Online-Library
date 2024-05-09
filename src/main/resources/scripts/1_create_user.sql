@@ -3,6 +3,7 @@
 -- Create the database if it doesn't exist
 DROP DATABASE IF EXISTS cs157a_final;
 CREATE DATABASE cs157a_final;
+ALTER DATABASE cs157a_final CHARACTER SET = utf8 COLLATE = utf8_general_ci;
 
 -- Create a new user for the 'simplevault' schema
 DROP USER IF EXISTS 'user'@'localhost';

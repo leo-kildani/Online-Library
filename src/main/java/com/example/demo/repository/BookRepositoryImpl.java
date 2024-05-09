@@ -123,16 +123,6 @@ public class BookRepositoryImpl implements BookRepository {
         return (List<Review>) query.getResultList();
     }
 
-    @Override
-    public boolean checkBookAvailable(Book book) {
-        String queryString = "SELECT COUNT(*) > 0 FROM book_checkouts WHERE isbn = :isbn";
-        Query query = entityManager
-                .createNativeQuery(queryString, Boolean.class)
-                .setParameter("isbn", book.getIsbn());
-        List<Boolean> result = (List<Boolean>) query.getResultList();
-        return result.isEmpty() ? false : result.get(0).booleanValue();
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public List<Book> findByAuthorId(int authorId) {

@@ -42,6 +42,7 @@ CREATE TABLE books (
     `author_id` INT NOT NULL,
     `publish_date` DATE NOT NULL,
     `description` VARCHAR(512),
+    `copies` INT NOT NULL,
     PRIMARY KEY (`isbn`),
     FOREIGN KEY (`author_id`) REFERENCES authors(`author_id`) ON DELETE CASCADE ON UPDATE CASCADE,
     INDEX idx_title (`title`),
