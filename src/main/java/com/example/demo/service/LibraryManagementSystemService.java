@@ -107,4 +107,6 @@ public interface LibraryManagementSystemService {
         int getUserBookRating(User user, Book book);
 
         List<BookCheckout> findCheckoutByIsbn(String isbn);
+
+        String formatLocalDate(LocalDate date, String pattern);
 }

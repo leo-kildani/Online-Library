@@ -32,12 +32,12 @@
 <div class="container">
     <h1 th:text="${book.title}">Book Title</h1>
 
-    <!-- Biography box -->
+    <!-- Description box -->
     <div class="description-container mb-4">
         <p th:text="${book.description}">Book description</p>
-        <p th:text="'Published: ' + ${book.publishDate}">Publish Data</p>
+        <p th:text="'Published: ' + ${book.publishDate}">Publish Date</p>
+        <p th:text="'Remaining Copies: ' + ${remainingCopies}">Remaining Copies</p>
     </div>
-
 
     <h3>Author</h3>
     <div class="card">
@@ -113,7 +113,7 @@
             <div class="card my-2">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${review.username}">Username</h5>
-                    <h6 class="card-subtitle mb-2 text-muted" th:text="${#dates.format(review.publishDate, 'yyyy-MM-dd')}">Publish Date</h6>
+                    <h6 class="card-subtitle mb-2 text-muted" th:text="${review.publishDate}">Publish Date</h6>
                     <p class="card-text" th:text="${review.content}">Review Content</p>
                 </div>
             </div>
