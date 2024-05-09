@@ -4,11 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.demo.entity.Author;
-import com.example.demo.entity.Book;
-import com.example.demo.entity.Genre;
-import com.example.demo.entity.Review;
-import com.example.demo.entity.User;
+import com.example.demo.entity.*;
 
 public interface LibraryManagementSystemService {
 
@@ -107,4 +103,6 @@ public interface LibraryManagementSystemService {
     void userRatesBook(User user, Book book, int stars);
 
     int getUserBookRating(User user, Book book);
+
+    List<BookCheckout> findCheckoutByIsbn(String isbn);
 }

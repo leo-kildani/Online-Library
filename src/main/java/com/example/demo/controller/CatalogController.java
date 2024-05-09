@@ -64,12 +64,15 @@
 
             List<Genre> resultGenres = new ArrayList<Genre>();
             List<Author> resultAuthors = new ArrayList<Author>();
+            List<Integer> remainingCopies = new ArrayList<Integer>();
             books.forEach(book -> {
                 resultGenres.add(libService.getGenreByBook(book).get(0));
                 resultAuthors.add(libService.getAuthorByBook(book));
+                remainingCopies.add(book.getCopies() - libService.findCheckoutByIsbn(book.getIsbn()).size());
             });
             model.addAttribute("resultGenres", resultGenres);
             model.addAttribute("resultAuthors", resultAuthors);
+            model.addAttribute("remainingCopies", remainingCopies);
 
             return "catalog";
         }

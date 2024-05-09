@@ -326,4 +326,9 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     public int getUserBookRating(User user, Book book) {
         return userRepository.getUserBookRating(user, book);
     }
+
+    @Override
+    public List<BookCheckout> findCheckoutByIsbn(String isbn) {
+        return bookCheckoutRepository.findByIsbn(isbn);
+    }
 }
