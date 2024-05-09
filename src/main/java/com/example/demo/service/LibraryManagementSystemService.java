@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
 import com.example.demo.entity.Author;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.BookCheckout;
@@ -98,4 +100,8 @@ public interface LibraryManagementSystemService {
     List<Genre> getGenreByBook(Book book);
 
     Author getAuthorByBook(Book book);
+
+    Optional<Author> getAuthorById(int id);
+
+    List<Book> getBookByAuthorId(int id);
 }
