@@ -104,4 +104,6 @@ public interface LibraryManagementSystemService {
     Optional<Author> getAuthorById(int id);
 
     List<Book> getBookByAuthorId(int id);
+
+    void userRatesBook(User user, Book book, int stars);
 }

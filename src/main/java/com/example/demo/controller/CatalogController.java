@@ -100,6 +100,20 @@ import java.util.List;
             return "authorDetails"; // Name of the Thymeleaf template for author details
         }
 
+        @GetMapping("/book")
+        public String bookDetails(@RequestParam("isbn") String isbn, Model model) {
+            Book book = libService.getBook(isbn);
+            Author author = libService.getAuthorByBook(book);
+            List<Genre> genres = libService.getGenreByBook(book);
+            logger.info("bookDetails genres:" + genres);
+
+            model.addAttribute("book", book);
+            model.addAttribute("author", author);
+            model.addAttribute("genres", genres);
+
+            return "bookDetails"; // Name of the Thymeleaf template for book details
+        }
+
         @GetMapping("/catalog/logout")
         public String logout(RedirectAttributes redirectAttributes) {
             redirectAttributes.addFlashAttribute("logoutMessage", "You have been logged out successfully");
