@@ -35,8 +35,6 @@ public interface BookRepository extends Repository<Book, String> {
 
     List<Review> getBookReviews(Book book);
 
-    boolean checkBookAvailable(Book book);
-
     List<Book> findByAuthorId(int authorId);
 
     void bookIsGenres(Book book, List<Genre> genres);

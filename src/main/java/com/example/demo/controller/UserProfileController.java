@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.controller.CurrentUser;
 import com.example.demo.entity.Book;
 import com.example.demo.service.LibraryManagementSystemService;
 import org.springframework.stereotype.Controller;
@@ -17,12 +16,8 @@ import org.slf4j.LoggerFactory;
 @Controller
 public class UserProfileController {
 
-    private final LibraryManagementSystemService libService;
-
     @Autowired
-    public UserProfileController(LibraryManagementSystemService libService) {
-        this.libService = libService;
-    }
+    private  LibraryManagementSystemService service;
 
     @Autowired
     private CurrentUser currentUser;
@@ -31,14 +26,12 @@ public class UserProfileController {
 
     @GetMapping("/userprofile")
     public String getUserProfile(Model model) {
-        User user = currentUser.getCurrentUser();
-
-        if (user != null) {
-            model.addAttribute("user", user);
+        if (currentUser.checkUser()) {
+            model.addAttribute("user", currentUser.getCurrentUser());
             // model.addAttribute("userRole",
             // libService.findByUsername(user.getUsername()));
         } else {
-            return "redirect:/login";
+            return "redirect:/loginPage";
         }
 
         return "userprofile";
@@ -48,7 +41,7 @@ public class UserProfileController {
     public String getFavAuthors(Model model) {
         User user = currentUser.getCurrentUser();
         logger.info("Current User: " + user.getUsername());
-        List<Author> authors = libService.getUserFavoriteAuthor(user);
+        List<Author> authors = service.getUserFavoriteAuthor(user);
         model.addAttribute("favAuthors", authors);
         logger.info("Returning authors: " + authors);
         return "fragments/favoriteAuthors";
@@ -58,7 +51,7 @@ public class UserProfileController {
     public String getLikedGenres(Model model) {
         User user = currentUser.getCurrentUser();
         logger.info("Current User: " + user.getUsername());
-        List<Genre> genres = libService.getUserLikedGenres(user);
+        List<Genre> genres = service.getUserLikedGenres(user);
         model.addAttribute("likedGenres", genres);
         logger.info("Returning genres: " + genres);
         return "fragments/likedGenres";
@@ -68,7 +61,7 @@ public class UserProfileController {
     public String getBorrowedBooks(Model model) {
         User user = currentUser.getCurrentUser();
         logger.info("Current User: " + user.getUsername());
-        List<Book> books = libService.getUserCheckedBooks(user);
+        List<Book> books = service.getUserCheckedBooks(user);
         model.addAttribute("borrowedBooks", books);
         logger.info("Returning books: " + books);
         return "fragments/borrowedBooks";
@@ -78,7 +71,7 @@ public class UserProfileController {
     public String getRecs(Model model) {
         User user = currentUser.getCurrentUser();
         logger.info("Current User: " + user.getUsername());
-        List<Book> recs = libService.getUserRecommendations(user);
+        List<Book> recs = service.getUserRecommendations(user);
         model.addAttribute("recs", recs);
         logger.info("Returning recs: " + recs);
         return "fragments/recommendations";

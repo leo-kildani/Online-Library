@@ -99,10 +99,10 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public int getBookStarRating(Book book) {
         String queryString = "SELECT ROUND(AVG(B.stars)) FROM user_rates_book B WHERE B.isbn = :isbn";
-        Query query = entityManager.createNativeQuery(queryString, Integer.class);
+        Query query = entityManager.createNativeQuery(queryString);
         query.setParameter("isbn", book.getIsbn());
-        List<Integer> result = (List<Integer>) query.getResultList();
-        return result.isEmpty() ? 0 : result.get(0).intValue();
+        Number result = (Number) query.getSingleResult();
+        return result != null ? result.intValue() : 0;
     }
 
     @SuppressWarnings("unchecked")
@@ -121,16 +121,6 @@ public class BookRepositoryImpl implements BookRepository {
         Query query = entityManager.createNativeQuery(queryString, Review.class);
         query.setParameter("isbn", book.getIsbn());
         return (List<Review>) query.getResultList();
-    }
-
-    @Override
-    public boolean checkBookAvailable(Book book) {
-        String queryString = "SELECT COUNT(*) > 0 FROM book_checkouts WHERE isbn = :isbn";
-        Query query = entityManager
-                .createNativeQuery(queryString, Boolean.class)
-                .setParameter("isbn", book.getIsbn());
-        List<Boolean> result = (List<Boolean>) query.getResultList();
-        return result.isEmpty() ? false : result.get(0).booleanValue();
     }
 
     @SuppressWarnings("unchecked")

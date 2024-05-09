@@ -13,4 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public @Data class CurrentUser {
     private User currentUser;
+
+    public boolean checkUser() {
+        return currentUser != null;
+    }
 }

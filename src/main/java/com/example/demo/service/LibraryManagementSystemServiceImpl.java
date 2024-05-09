@@ -103,7 +103,8 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
-    public void deleteBookCheckout(BookCheckout bookCheckout) {
+    public void deleteBookCheckout(User user, Book book) {
+        BookCheckout bookCheckout = bookCheckoutRepository.findByIsbnAndUsername(book.getIsbn(), user.getUsername());
         bookCheckoutRepository.delete(bookCheckout);
     }
 
@@ -169,7 +170,10 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
-    public List<Book> getBookByAppliedFilters(String title, String authorLastName, String genre/*, LocalDate publishDate*/) {
+    public List<Book> getBookByAppliedFilters(String title, String authorLastName, String genre/*
+                                                                                                * , LocalDate
+                                                                                                * publishDate
+                                                                                                */) {
         List<Book> result = null;
 
         if (title != null && !title.isEmpty()) {
@@ -192,13 +196,13 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
         }
 
         logger.info("result after genre: " + result);
-//
-//        if (publishDate != null && !publishDate.isEmpty()) {
-//            List<Book> dateResults = bookRepository.findByPublishDate(publishDate);
-//            result = (result == null) ? dateResults : intersect(result, dateResults);
-//        }
-//
-//        logger.info("result after publish: " + result);
+        //
+        // if (publishDate != null && !publishDate.isEmpty()) {
+        // List<Book> dateResults = bookRepository.findByPublishDate(publishDate);
+        // result = (result == null) ? dateResults : intersect(result, dateResults);
+        // }
+        //
+        // logger.info("result after publish: " + result);
 
         return (result != null) ? result : new ArrayList<>();
     }
@@ -217,7 +221,8 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
 
     @Override
     public boolean checkBookAvailable(Book book) {
-        return bookRepository.checkBookAvailable(book);
+        int copiesCheckedOut = bookCheckoutRepository.findByIsbn(book.getIsbn()).size();
+        return copiesCheckedOut < book.getCopies();
     }
 
     @Override
@@ -317,8 +322,12 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
-    public Optional<Author> getAuthorById(int id) { return authorRepository.findById(id); }
+    public Optional<Author> getAuthorById(int id) {
+        return authorRepository.findById(id);
+    }
 
     @Override
-    public List<Book> getBookByAuthorId(int id) { return bookRepository.findByAuthorId(id); }
+    public List<Book> getBookByAuthorId(int id) {
+        return bookRepository.findByAuthorId(id);
+    }
 }
