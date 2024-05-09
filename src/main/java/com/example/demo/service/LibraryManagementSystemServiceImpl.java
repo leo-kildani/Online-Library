@@ -24,6 +24,7 @@ import com.example.demo.repository.GenreRepository;
 import com.example.demo.repository.ReviewRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.UserRoleRepository;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class LibraryManagementSystemServiceImpl implements LibraryManagementSystemService {
@@ -330,5 +331,12 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     @Override
     public List<BookCheckout> findCheckoutByIsbn(String isbn) {
         return bookCheckoutRepository.findByIsbn(isbn);
+    }
+
+    @Override
+    public String formatLocalDate(LocalDate date, String pattern) {
+        if (date == null) return "N/A";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return formatter.format(date);
     }
 }
