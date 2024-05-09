@@ -51,7 +51,12 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title" th:text="${book.title}">Book Title</h5>
-          <p class="card-text" th:text="${resultAuthors[__${iterStat.index}__].firstName} + ' ' + ${resultAuthors[__${iterStat.index}__].lastName}">Author Name</p>
+          <p class="card-text">
+            <a th:href="@{/author(id=${resultAuthors[__${iterStat.index}__].authorId})}"
+               th:text="${resultAuthors[__${iterStat.index}__].firstName} + ' ' + ${resultAuthors[__${iterStat.index}__].lastName}">
+              Author Name
+            </a>
+          </p>
           <p class="card-text"><small th:text="${resultGenres[__${iterStat.index}__].name}">Genre</small></p>
           <button class="btn btn-success">Checkout</button>
         </div>

@@ -39,7 +39,7 @@
                 model.addAttribute("user", user);
     //            model.addAttribute("userRole", libService.findByUsername(user.getUsername()));
             } else {
-//                return "redirect:/loginPage";
+                return "redirect:/loginPage";
             }
 
             List<Genre> genres = libService.getAllGenres();
@@ -76,5 +76,27 @@
             model.addAttribute("resultAuthors", resultAuthors);
 
             return "catalog";
+        }
+
+        @GetMapping("/author")
+        public String authorDetails(@RequestParam("id") int authorId, Model model) {
+            Optional<Author> authorOptional = libService.getAuthorById(authorId);
+            if (!authorOptional.isPresent()) {
+                return "redirect:/catalog";
+            }
+            Author author = authorOptional.get();
+            model.addAttribute("author", author);
+
+            List<Book> booksByAuthor = libService.getBookByAuthorId(authorId);
+            model.addAttribute("books", booksByAuthor);
+
+            List<Genre> bookGenres = new ArrayList<Genre>();
+            booksByAuthor.forEach(book -> {
+                bookGenres.add(libService.getGenreByBook(book).get(0));
+            });
+            model.addAttribute("bookGenres", bookGenres);
+            logger.info("bookGenres:" + bookGenres);
+
+            return "authorDetails"; // Name of the Thymeleaf template for author details
         }
     }

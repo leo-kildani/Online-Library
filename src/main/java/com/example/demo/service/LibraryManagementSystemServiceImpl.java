@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.example.demo.controller.CatalogController;
 import org.slf4j.Logger;
@@ -315,4 +316,10 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     public Author getAuthorByBook(Book book) {
         return bookRepository.getAuthorByBook(book);
     }
+
+    @Override
+    public Optional<Author> getAuthorById(int id) { return authorRepository.findById(id); }
+
+    @Override
+    public List<Book> getBookByAuthorId(int id) { return bookRepository.findByAuthorId(id); }
 }
