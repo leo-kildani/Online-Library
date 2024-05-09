@@ -195,7 +195,7 @@ public class UserRepositoryImpl implements UserRepository {
             Number rating = (Number) results.get(0);
             return rating.intValue();
         }
-        return 0;  //no rating found
+        return 0; // no rating found
     }
 
 }
