@@ -94,6 +94,10 @@
                 <small th:text="${resultGenres[__${iterStat.index}__].name}"
                   >Genre</small>
               </p>
+              <p class="card-text">
+                <small th:text="'Remaining Copies: ' + ${remainingCopies[__${iterStat.index}__]}"
+                >Copies</small>
+              </p>
               <div th:if="${service.checkBookAvailable(book)}">
                 <a th:href="@{/catalog/checkout(isbn=${book.isbn})}">
                   <button class="btn btn-success">Checkout</button>
