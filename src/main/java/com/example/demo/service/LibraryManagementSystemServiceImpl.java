@@ -169,33 +169,36 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
-    public List<Book> getBookByAppliedFilters(String title, String authorLastName, String genre, LocalDate publishDate) {
+    public List<Book> getBookByAppliedFilters(String title, String authorLastName, String genre/*, LocalDate publishDate*/) {
         List<Book> result = null;
 
-        if (title != null) {
+        if (title != null && !title.isEmpty()) {
             List<Book> titleResults = bookRepository.findLikeTitle(title);
             result = (result == null) ? titleResults : intersect(result, titleResults);
         }
-        if (authorLastName != null) {
+        logger.info("result after title: " + result);
+        if (authorLastName != null && !authorLastName.isEmpty()) {
             List<Book> authorResults = bookRepository.findByAuthorLastName(authorLastName);
             logger.info("books inside authorLastName if: " + authorResults);
             result = (result == null) ? authorResults : intersect(result, authorResults);
         }
 
         logger.info("result after name: " + result);
-        if (genre != null) {
+        logger.info("genre:" + genre);
+        if (genre != null && !genre.isEmpty()) {
             List<Book> genreResults = bookRepository.findByGenre(genre);
+            logger.info("result after genre inside genre if: " + genreResults);
             result = (result == null) ? genreResults : intersect(result, genreResults);
         }
 
         logger.info("result after genre: " + result);
-
-        if (publishDate != null) {
-            List<Book> dateResults = bookRepository.findByPublishDate(publishDate);
-            result = (result == null) ? dateResults : intersect(result, dateResults);
-        }
-
-        logger.info("result after publish: " + result);
+//
+//        if (publishDate != null && !publishDate.isEmpty()) {
+//            List<Book> dateResults = bookRepository.findByPublishDate(publishDate);
+//            result = (result == null) ? dateResults : intersect(result, dateResults);
+//        }
+//
+//        logger.info("result after publish: " + result);
 
         return (result != null) ? result : new ArrayList<>();
     }
@@ -296,5 +299,20 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     @Override
     public List<Book> getUserCheckedBooks(User user) {
         return userRepository.getUserCheckedBooks(user);
+    }
+
+    @Override
+    public List<Genre> getAllGenres() {
+        return genreRepository.findAll();
+    }
+
+    @Override
+    public List<Genre> getGenreByBook(Book book) {
+        return bookRepository.getGenreByBook(book);
+    }
+
+    @Override
+    public Author getAuthorByBook(Book book) {
+        return bookRepository.getAuthorByBook(book);
     }
 }

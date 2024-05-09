@@ -2,6 +2,8 @@
 
     import com.example.demo.entity.User;
     import com.example.demo.entity.Book;
+    import com.example.demo.entity.Genre;
+    import com.example.demo.entity.Author;
     import com.example.demo.service.LibraryManagementSystemService;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.stereotype.Controller;
@@ -9,6 +11,9 @@
     import org.springframework.web.bind.annotation.GetMapping;
     import org.springframework.web.bind.annotation.RequestParam;
     import java.util.List;
+    import java.util.ArrayList;
+    import java.util.Optional;
+
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
 
@@ -27,31 +32,49 @@
         private static final Logger logger = LoggerFactory.getLogger(CatalogController.class);
 
         @GetMapping("/catalog")
-        public String getUserProfile(Model model) {
+        public String loadPage(Model model) {
             User user = currentUser.getCurrentUser();
 
             if (user != null) {
                 model.addAttribute("user", user);
     //            model.addAttribute("userRole", libService.findByUsername(user.getUsername()));
             } else {
-                return "redirect:/login";
+//                return "redirect:/loginPage";
             }
+
+            List<Genre> genres = libService.getAllGenres();
+            logger.info("retrieved genres:" + genres);
+            model.addAttribute("genres", genres);
 
             return "catalog";
         }
 
         @GetMapping("/catalog/search")
-        public String searchBooks(@RequestParam(required = false) String title,
-                                  @RequestParam(required = false) String author,
-                                  @RequestParam(required = false) String genre,
+        public String searchBooks(@RequestParam(required = false) Optional<String> title,
+                                  @RequestParam(required = false) Optional<String> author,
+                                  @RequestParam(required = false) Optional<String> genre,
                                   Model model) {
+            List<Book> books = libService.getBookByAppliedFilters(
+                    title.orElse(null),
+                    author.orElse(null),
+                    genre.orElse(null));
 
-            //convert empty genre string to null
-            genre = (genre != null && !genre.isEmpty()) ? genre : null;
-
-            List<Book> books = libService.getBookByAppliedFilters(title, author, genre, null);
             model.addAttribute("books", books);
             logger.info("Retrieved Books: " + books);
+
+            List<Genre> genres = libService.getAllGenres();
+            logger.info("retrieved genres:" + genres);
+            model.addAttribute("genres", genres);
+
+            List<Genre> resultGenres = new ArrayList<Genre>();
+            List<Author> resultAuthors = new ArrayList<Author>();
+            books.forEach(book -> {
+                resultGenres.add(libService.getGenreByBook(book).get(0));
+                resultAuthors.add(libService.getAuthorByBook(book));
+            });
+            model.addAttribute("resultGenres", resultGenres);
+            model.addAttribute("resultAuthors", resultAuthors);
+
             return "catalog";
         }
     }
