@@ -76,7 +76,12 @@
         <div th:each="book, iterStat : ${books}" class="col-md-4 mb-4">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title" th:text="${book.title}">Book Title</h5>
+              <h5 class="card-title">
+                <a th:href="@{/book(isbn=${book.isbn})}"
+                   th:text="${book.title}">
+                  Book Title
+                </a>
+              </h5>
               <p class="card-text">
                 <a
                   th:href="@{/author(id=${resultAuthors[__${iterStat.index}__].authorId})}"
@@ -87,8 +92,7 @@
               </p>
               <p class="card-text">
                 <small th:text="${resultGenres[__${iterStat.index}__].name}"
-                  >Genre</small
-                >
+                  >Genre</small>
               </p>
               <div th:if="${service.checkBookAvailable(book)}">
                 <a th:href="@{/catalog/checkout(isbn=${book.isbn})}">

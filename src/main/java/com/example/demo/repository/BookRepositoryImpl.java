@@ -96,14 +96,17 @@ public class BookRepositoryImpl implements BookRepository {
         return (List<Book>) query.getResultList();
     }
 
-    @Override
-    public double getBookStarRating(Book book) {
-        String queryString = "SELECT AVG(B.stars) FROM user_rates_book B WHERE B.isbn = :isbn";
-        Query query = entityManager.createNativeQuery(queryString, Double.class);
-        query.setParameter("isbn", book.getIsbn());
-        List<Double> result = (List<Double>) query.getResultList();
-        return result.isEmpty() ? 0 : result.get(0).doubleValue();
-    }
+        @Override
+        public double getBookStarRating(Book book) {
+            String queryString = "SELECT AVG(B.stars) FROM user_rates_book B WHERE B.isbn = :isbn";
+            Query query = entityManager.createNativeQuery(queryString, Double.class);
+            query.setParameter("isbn", book.getIsbn());
+            List<Double> result = (List<Double>) query.getResultList();
+            if (!result.isEmpty() && result.get(0) != null) {
+                return result.get(0).doubleValue();
+            }
+            return 0;  // Return 0 if no ratings or null result
+        }
 
     @SuppressWarnings("unchecked")
     @Override
