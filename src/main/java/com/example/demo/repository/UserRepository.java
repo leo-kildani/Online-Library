@@ -18,6 +18,8 @@ public interface UserRepository extends Repository<User, String> {
     // find a string match to provided username
     User findByUsername(String username);
 
+    User findByEmail(String email);
+
     // find similar/substring match to provided username
     List<User> findLikeUsername(String username);
 
