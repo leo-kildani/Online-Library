@@ -726,65 +726,76 @@ VALUES
 
 INSERT INTO reviews (content, username, publish_date, isbn)
 SELECT 
-    CONCAT('Great book, highly recommended! ', FLOOR(RAND() * 10000)),
-    username,
-    '2024-05-07',
-    isbn
+    CONCAT('Great book, highly recommended! ', FLOOR(RAND() * 10000)) AS content,
+    u.username,
+    DATE_ADD('2024-05-07', INTERVAL -FLOOR(RAND() * 365) DAY) AS publish_date,
+    b.isbn
 FROM
-    (SELECT username FROM users ORDER BY RAND() LIMIT 80) AS u,
-    (SELECT isbn FROM books ORDER BY RAND() LIMIT 403) AS b;
+    (SELECT username FROM users ORDER BY RAND() LIMIT 100) AS u
+JOIN
+    (SELECT isbn FROM books ORDER BY RAND() LIMIT 100) AS b
+ON 1=1
+ORDER BY RAND()
+LIMIT 100;
 
 
 INSERT INTO book_checkouts (username, isbn, checkout_date)
 SELECT
-    u.username,
-    b.isbn,
+    username,
+    isbn,
     DATE_ADD(NOW(), INTERVAL -FLOOR(RAND() * 365) DAY) AS checkout_date
 FROM
-    (SELECT username FROM users ORDER BY RAND() LIMIT 100) AS u,
-    (SELECT isbn FROM books ORDER BY RAND() LIMIT 403) AS b;
+    (SELECT username FROM users ORDER BY RAND() LIMIT 100) AS u
+CROSS JOIN
+    (SELECT isbn FROM books ORDER BY RAND() LIMIT 403) AS b
+ORDER BY RAND()
+LIMIT 100;
+
 
 INSERT INTO user_favorites_author (username, author_id)
-SELECT u.username, a.author_id
-FROM (
-    SELECT username
-    FROM users
-    ORDER BY RAND()
-    LIMIT 100
-) AS u
-CROSS JOIN (
-    SELECT author_id
-    FROM authors
-    ORDER BY RAND()
-    LIMIT 71  -- Limit to the number of available authors
-) AS a;
+SELECT 
+    username,
+    (SELECT author_id FROM authors ORDER BY RAND() LIMIT 1) AS author_id
+FROM
+    users
+ORDER BY RAND()
+LIMIT 100;
+
 
 INSERT INTO user_likes_genres (username, genre_name)
-SELECT u.username, g.genre_name
-FROM (
-    SELECT username
-    FROM users
-    ORDER BY RAND()
-    LIMIT 100
-) AS u
-CROSS JOIN (
-    SELECT genre_name
-    FROM genres
-    ORDER BY RAND()
-    LIMIT 100
-) AS g;
+SELECT 
+    u.username,
+    g.genre_name
+FROM
+    (SELECT username FROM users ORDER BY RAND() LIMIT 100) AS u
+CROSS JOIN
+    (SELECT genre_name FROM genres) AS g
+ORDER BY RAND()
+LIMIT 30;
 
+    
+    
 INSERT INTO user_rates_book (username, isbn, stars)
 SELECT 
     u.username,
     b.isbn,
-    FLOOR(RAND() * 5) + 1 AS stars
+    FLOOR(1 + (RAND() * 5)) AS stars
 FROM
-    (SELECT username FROM users ORDER BY RAND() LIMIT 100) AS u
-CROSS JOIN
-    (SELECT isbn FROM books ORDER BY RAND() LIMIT 403) AS b;
+    (SELECT username FROM users ORDER BY RAND() LIMIT 100) AS u,
+    (SELECT isbn FROM books ORDER BY RAND() LIMIT 403) AS b
+ORDER BY RAND()
+LIMIT 403;
+
 
 INSERT INTO book_is_genre (isbn, genre_name)
-SELECT isbn, genre_name
-FROM books
-CROSS JOIN genres;
+SELECT b.isbn, g.genre_name
+FROM books b
+JOIN (
+    SELECT isbn, genre_name, ROW_NUMBER() OVER (PARTITION BY isbn ORDER BY RAND()) as rn
+    FROM (
+        SELECT isbn, genre_name
+        FROM books
+        CROSS JOIN genres
+    ) AS temp
+) AS g ON b.isbn = g.isbn
+WHERE g.rn = 1;

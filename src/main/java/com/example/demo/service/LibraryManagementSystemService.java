@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
 import com.example.demo.entity.Author;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.BookCheckout;
@@ -57,7 +59,7 @@ public interface LibraryManagementSystemService {
 
     List<Book> getBooksByPublishDate(LocalDate date);
 
-    List<Book> getBookByAppliedFilters(String title, String authorLastName, String genre, LocalDate publishDate);
+    List<Book> getBookByAppliedFilters(String title, String authorLastName, String genre/*, LocalDate publishDate*/);
 
     int getBookStarRating(Book book);
 
@@ -92,4 +94,14 @@ public interface LibraryManagementSystemService {
     List<Book> getUserRecommendations(User user);
 
     List<Book> getUserCheckedBooks(User user);
+
+    List<Genre> getAllGenres();
+
+    List<Genre> getGenreByBook(Book book);
+
+    Author getAuthorByBook(Book book);
+
+    Optional<Author> getAuthorById(int id);
+
+    List<Book> getBookByAuthorId(int id);
 }
