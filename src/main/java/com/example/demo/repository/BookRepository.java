@@ -9,6 +9,7 @@ import com.example.demo.entity.Book;
 import com.example.demo.entity.Genre;
 import com.example.demo.entity.Review;
 import com.example.demo.entity.User;
+import com.example.demo.entity.Author;
 
 public interface BookRepository extends Repository<Book, String> {
 
@@ -41,4 +42,8 @@ public interface BookRepository extends Repository<Book, String> {
     void bookIsGenres(Book book, List<Genre> genres);
 
     List<Book> getUserBookRecommendations(User user);
+
+    List<Genre> getGenreByBook(Book book);
+
+    Author getAuthorByBook(Book book);
 }

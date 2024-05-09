@@ -11,6 +11,7 @@ import com.example.demo.entity.Book;
 import com.example.demo.entity.Genre;
 import com.example.demo.entity.Review;
 import com.example.demo.entity.User;
+import com.example.demo.entity.Author;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -155,4 +156,26 @@ public class BookRepositoryImpl implements BookRepository {
             .setParameter("username", user.getUsername());
         return (List<Book>) query.getResultList();
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Genre> getGenreByBook(Book book) {
+        String queryString = "SELECT G.* FROM genres G " +
+                "JOIN book_is_genre BG ON G.genre_name = BG.genre_name " +
+                "WHERE BG.isbn = :isbn";
+        Query query = entityManager.createNativeQuery(queryString, Genre.class);
+        query.setParameter("isbn", book.getIsbn());
+        return (List<Genre>) query.getResultList();
+    }
+
+    @Override
+    public Author getAuthorByBook(Book book) {
+        String queryString = "SELECT A.* FROM authors A " +
+                "JOIN books B ON A.author_id = B.author_id " +
+                "WHERE B.isbn = :isbn";
+        Query query = entityManager.createNativeQuery(queryString, Author.class);
+        query.setParameter("isbn", book.getIsbn());
+        return (Author) query.getSingleResult();
+    }
+
 }
