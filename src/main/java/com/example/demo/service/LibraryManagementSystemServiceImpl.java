@@ -226,8 +226,9 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
-    public double getUserLateFees(User user) {
-        return userRepository.getUserLateFees(user);
+    public String getUserLateFees(User user) {
+        double lateFees = userRepository.getUserLateFees(user);
+        return String.format("$%.2f", lateFees);
     }
 
     @Override
@@ -296,6 +297,10 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
         return userRepository.getUserCheckedBooks(user);
     }
 
+    public BookCheckout getUserCheckedBook(User user, String isbn) {
+        return bookCheckoutRepository.findByIsbnAndUsername(isbn, user.getUsername());
+    }
+
     @Override
     public List<Genre> getAllGenres() {
         return genreRepository.findAll();
@@ -317,10 +322,14 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
-    public List<Book> getBookByAuthorId(int id) { return bookRepository.findByAuthorId(id); }
+    public List<Book> getBookByAuthorId(int id) {
+        return bookRepository.findByAuthorId(id);
+    }
 
     @Override
-    public void userRatesBook(User user, Book book, int stars) { userRepository.userRatesBook(user, book, stars); }
+    public void userRatesBook(User user, Book book, int stars) {
+        userRepository.userRatesBook(user, book, stars);
+    }
 
     @Override
     public int getUserBookRating(User user, Book book) {
