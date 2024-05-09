@@ -41,4 +41,12 @@ public class BookDetailsController {
         return "redirect:/book?isbn=" + isbn;
     }
 
+    @PostMapping("/submitReview")
+    public String reviewBook(@RequestParam("isbn") String isbn,
+                             @RequestParam("reviewContent") String content) {
+        User user = currentUser.getCurrentUser();
+        Book book = libService.getBook(isbn);
+        libService.addReview(content, user, book);
+        return "redirect:/book?isbn=" + isbn;
+    }
 }

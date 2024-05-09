@@ -97,12 +97,12 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public int getBookStarRating(Book book) {
-        String queryString = "SELECT ROUND(AVG(B.stars)) FROM user_rates_book B WHERE B.isbn = :isbn";
-        Query query = entityManager.createNativeQuery(queryString, Integer.class);
+    public double getBookStarRating(Book book) {
+        String queryString = "SELECT AVG(B.stars) FROM user_rates_book B WHERE B.isbn = :isbn";
+        Query query = entityManager.createNativeQuery(queryString, Double.class);
         query.setParameter("isbn", book.getIsbn());
-        List<Integer> result = (List<Integer>) query.getResultList();
-        return result.isEmpty() ? 0 : result.get(0).intValue();
+        List<Double> result = (List<Double>) query.getResultList();
+        return result.isEmpty() ? 0 : result.get(0).doubleValue();
     }
 
     @SuppressWarnings("unchecked")

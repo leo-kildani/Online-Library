@@ -51,4 +51,6 @@ public interface UserRepository extends Repository<User, String> {
     void userUnfavoritesAuthor(User user, Author author);
 
     void userRatesBook(User user, Book book, int stars);
+
+    int getUserBookRating(User user, Book book);
 }
