@@ -44,7 +44,7 @@ public interface LibraryManagementSystemService {
     void deleteAuthor(Author author);
 
     void addBook(String isbn, String title, Author author, LocalDate publishDate, String description,
-            List<Genre> genres);
+            List<Genre> genres, int copies);
 
     void updateBook(Book book);
 

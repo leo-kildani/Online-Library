@@ -85,8 +85,8 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
 
     @Override
     public void addBook(String isbn, String title, Author author, LocalDate publishDate, String description,
-            List<Genre> genres) {
-        Book book = new Book(isbn, title, author.getAuthorId(), publishDate, description);
+            List<Genre> genres, int copies) {
+        Book book = new Book(isbn, title, author.getAuthorId(), publishDate, description, copies);
         bookRepository.save(book);
         bookRepository.bookIsGenres(book, genres);
     }
