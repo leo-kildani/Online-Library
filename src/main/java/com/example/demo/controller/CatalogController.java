@@ -49,7 +49,7 @@ public class CatalogController {
         // convert empty genre string to null
         genre = (genre != null && !genre.isEmpty()) ? genre : null;
 
-        List<Book> books = service.getBookByAppliedFilters(title, author, genre, null);
+        List<Book> books = service.getBookByAppliedFilters(title, author, genre);
         model.addAttribute("books", books);
         logger.info("Retrieved Books: " + books);
         return "catalog";
