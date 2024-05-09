@@ -38,8 +38,11 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Log In</button>
-                <div th:if="${err}" th:text="${err}" class="text-danger"></div>
-                <div th:if="${msg}" th:text="${msg}" class="text-success"></div>
+                <div class="mt-3">
+                    <div th:if="${err}" th:text="${err}" class="text-danger"></div>
+                    <div th:if="${logoutMessage}" th:text="${logoutMessage}" class="text-info"></div>
+                    <div th:if="${msg}" th:text="${msg}" class="text-success"></div>
+                </div>
             </form>
         </div>
 
