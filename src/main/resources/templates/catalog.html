@@ -39,12 +39,7 @@
       <label for="genre" class="form-label">Genre:</label>
       <select class="form-select" id="genre" name="genre">
         <option value="">Select a genre</option>
-        <option value="Fiction">Fiction</option>
-        <option value="Non-Fiction">Non-Fiction</option>
-        <option value="Science Fiction">Science Fiction</option>
-        <option value="Fantasy">Fantasy</option>
-        <option value="Mystery">Mystery</option>
-        <option value="Biography">Biography</option>
+        <option th:each="genre : ${genres}" th:value="${genre.name}" th:text="${genre.name}"></option>
       </select>
     </div>
     <button type="submit" class="btn btn-primary">Search</button>

@@ -171,6 +171,7 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
             List<Book> titleResults = bookRepository.findLikeTitle(title);
             result = (result == null) ? titleResults : intersect(result, titleResults);
         }
+        logger.info("result after title: " + result);
         if (authorLastName != null) {
             List<Book> authorResults = bookRepository.findByAuthorLastName(authorLastName);
             logger.info("books inside authorLastName if: " + authorResults);
@@ -178,8 +179,10 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
         }
 
         logger.info("result after name: " + result);
+        logger.info("genre:" + genre);
         if (genre != null) {
             List<Book> genreResults = bookRepository.findByGenre(genre);
+            logger.info("result after genre inside genre if: " + genreResults);
             result = (result == null) ? genreResults : intersect(result, genreResults);
         }
 
@@ -291,5 +294,10 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     @Override
     public List<Book> getUserCheckedBooks(User user) {
         return userRepository.getUserCheckedBooks(user);
+    }
+
+    @Override
+    public List<Genre> getAllGenres() {
+        return genreRepository.findAll();
     }
 }

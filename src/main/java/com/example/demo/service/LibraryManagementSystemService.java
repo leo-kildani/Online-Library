@@ -90,4 +90,6 @@ public interface LibraryManagementSystemService {
     List<Book> getUserRecommendations(User user);
 
     List<Book> getUserCheckedBooks(User user);
+
+    List<Genre> getAllGenres();
 }
