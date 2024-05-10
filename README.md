@@ -37,6 +37,11 @@ chmod +x ./run_sql.sh
 
 -   By following the prompted instructions, a new user called "user" and password "password" will be made, and a new database called "cs157a_final" will be made. These will be used throughout the project.
 
+### 3. Running Project
+
+-   Run the LibraryManagementSystemApplication.java file in your IDE as a Java or a Maven project
+-   Go to http://localhost:8080/ on your browser
+
 ## Works
 
 Please Look at dbSchema.pdf.
