@@ -4,6 +4,7 @@
     import com.example.demo.entity.Genre;
     import com.example.demo.entity.Author;
     import com.example.demo.entity.Review;
+    import com.example.demo.entity.User;
     import com.example.demo.service.LibraryManagementSystemService;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.stereotype.Controller;
@@ -100,10 +101,26 @@
 
         @GetMapping("/book")
         public String bookDetails(@RequestParam("isbn") String isbn, Model model) {
+            User user = currentUser.getCurrentUser();
             Book book = libService.getBook(isbn);
+
             Author author = libService.getAuthorByBook(book);
+            Boolean userFavedAuthorBool = libService.getUserFavoriteAuthor(user).contains(author);
+
             List<Genre> genres = libService.getGenreByBook(book);
-            int userRating = libService.getUserBookRating(currentUser.getCurrentUser(), book);
+            List<Genre> userLikedGenres = libService.getUserLikedGenres(user);
+            List<Boolean> userLikedGenreBool = new ArrayList<Boolean>();
+            genres.forEach(genre -> {
+                if (userLikedGenres.contains(genre)) {
+                    userLikedGenreBool.add(true);
+                } else {
+                    userLikedGenreBool.add(false);
+                }
+            });
+            logger.info("userlikedgenres: " + userLikedGenres);
+            logger.info("genrebool: " + userLikedGenreBool);
+
+            int userRating = libService.getUserBookRating(user, book);
             double overallRating = Math.round(libService.getBookStarRating(book) * 10) / 10.0;
             List<Review> reviews = libService.getBookReviews(book);
             int remainingCopies = book.getCopies() - libService.findCheckoutByIsbn(book.getIsbn()).size();
@@ -111,7 +128,9 @@
 
             model.addAttribute("book", book);
             model.addAttribute("author", author);
+            model.addAttribute("authorFavedBool", userFavedAuthorBool);
             model.addAttribute("genres", genres);
+            model.addAttribute("genresLikedBool", userLikedGenreBool);
             model.addAttribute("userRating", userRating);
             model.addAttribute("overallRating", overallRating);
             model.addAttribute("reviews", reviews);

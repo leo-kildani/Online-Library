@@ -348,4 +348,9 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return formatter.format(date);
     }
+
+    @Override
+    public Optional<Genre> getGenreByName(String name) {
+        return genreRepository.findById(name);
+    }
 }
