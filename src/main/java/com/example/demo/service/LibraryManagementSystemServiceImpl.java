@@ -229,7 +229,7 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     @Override
     public String getUserLateFees(User user) {
         double lateFees = userRepository.getUserLateFees(user);
-        return String.format("$%.2f", lateFees);
+        return String.format("%.2f", lateFees);
     }
 
     @Override
