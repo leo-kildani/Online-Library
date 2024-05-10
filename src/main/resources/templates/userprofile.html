@@ -61,7 +61,7 @@
                             <p class="card-text"><strong>DOB:</strong> <span th:text="${user.dob}"></span></p>
                             <p class="card-text">
                                 <strong>Amount Due:</strong>
-                                <span th:text="${userFees}"></span>
+                                <span th:text="'$' + ${userFees}"></span>
                             </p>
                         </div>
                     </div>

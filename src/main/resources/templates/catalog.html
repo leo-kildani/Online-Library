@@ -26,6 +26,7 @@
         <div class="container">
             <h1>Search for Books</h1>
             <form id="searchForm" class="mb-4" th:action="@{/catalog/search}" method="GET">
+                <p class="text-danger my-1" th:if="${checkErr}" th:text="${checkErr}"></p>
                 <div class="mb-3">
                     <label for="title" class="form-label">Book Title:</label>
                     <input type="text" class="form-control" id="title" name="title" placeholder="Enter book title" />
