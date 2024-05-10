@@ -2,11 +2,11 @@
 
 ## Authors
 
--   Leonardo Kildani
--   Asher Alacar
--   Muyi Lin
--   Jiaxin Zhao
--   Shivansh Hedaoo
+-   Leonardo Kildani (Login/Logout Functions, Create Account Page/Functions, Book Checkout/Return Functions, Entities, Repository, Service, Testing, SQL DDL, Slides)
+-   Asher Alacar (UserProfile Page/Functions, Catalog Page/Functions, AuthorDetails Page/Functions, BookDetails Page/Functions, Slides)
+-   Muyi Lin (ER Diagram, Relational Schema, BCNF Normalization, Slides)
+-   Jiaxin Zhao (SQL DDL, SQL DML, Slides)
+-   Shivansh Hedaoo (Login Page, Create Account Page, Slides)
 
 ## Requirements
 
