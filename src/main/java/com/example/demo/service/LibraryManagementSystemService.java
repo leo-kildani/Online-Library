@@ -104,6 +104,8 @@ public interface LibraryManagementSystemService {
 
         void userRatesBook(User user, Book book, int stars);
 
+        void removeUserRating(User user, Book book);
+
         int getUserBookRating(User user, Book book);
 
         List<BookCheckout> findCheckoutByIsbn(String isbn);
