@@ -109,4 +109,6 @@ public interface LibraryManagementSystemService {
         List<BookCheckout> findCheckoutByIsbn(String isbn);
 
         String formatLocalDate(LocalDate date, String pattern);
+
+        Optional<Genre> getGenreByName(String name);
 }

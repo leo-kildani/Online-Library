@@ -49,4 +49,46 @@ public class BookDetailsController {
         libService.addReview(content, user, book);
         return "redirect:/book?isbn=" + isbn;
     }
+
+    @PostMapping("/likeGenre")
+    public String likeGenre(@RequestParam("genreName") String genreName,
+                            @RequestParam(value = "liked", defaultValue = "false") boolean liked,
+                            @RequestParam("isbn") String isbn) {
+        User user =  currentUser.getCurrentUser();
+        Optional<Genre>  optionalGenre = libService.getGenreByName(genreName);
+        if (!optionalGenre.isPresent()) {
+            return "redirect:/book?isbn=" + isbn;
+        }
+        Genre genre = optionalGenre.get();
+        if (liked) {
+            libService.userLikesGenre(user, genre);
+            logger.info("liked");
+        } else {
+            libService.userUnlikesGenre(user, genre);
+            logger.info("unliked");
+        }
+
+        return "redirect:/book?isbn=" + isbn;
+    }
+
+    @PostMapping("/favoriteAuthor")
+    public String favAuthor(@RequestParam("authorId") int authorId,
+                            @RequestParam(value = "favorited", defaultValue = "false") boolean liked,
+                            @RequestParam("isbn") String isbn) {
+        User user =  currentUser.getCurrentUser();
+        Optional<Author>  optionalAuthor = libService.getAuthorById(authorId);
+        if (!optionalAuthor.isPresent()) {
+            return "redirect:/book?isbn=" + isbn;
+        }
+        Author author = optionalAuthor.get();
+        if (liked) {
+            libService.userFavoritesAuthor(user, author);
+            logger.info("faved");
+        } else {
+            libService.userUnfavoritesAuthor(user, author);
+            logger.info("unfaved");
+        }
+
+        return "redirect:/book?isbn=" + isbn;
+    }
 }
