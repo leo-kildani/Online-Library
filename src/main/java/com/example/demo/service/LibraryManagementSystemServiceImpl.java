@@ -338,13 +338,19 @@ public class LibraryManagementSystemServiceImpl implements LibraryManagementSyst
     }
 
     @Override
+    public void removeUserRating(User user, Book book) {
+        userRepository.removeUserRating(user, book);
+    }
+
+    @Override
     public List<BookCheckout> findCheckoutByIsbn(String isbn) {
         return bookCheckoutRepository.findByIsbn(isbn);
     }
 
     @Override
     public String formatLocalDate(LocalDate date, String pattern) {
-        if (date == null) return "N/A";
+        if (date == null)
+            return "N/A";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return formatter.format(date);
     }
