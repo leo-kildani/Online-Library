@@ -11,7 +11,9 @@
       </thead>
       <tbody>
         <tr th:each="book : ${borrowedBooks}">
-          <td th:text="${book.title} "></td>
+          <td>
+            <a th:href="@{/book(isbn=${book.isbn})}" th:text="${book.title}"> Book Title </a>
+          </td>
           <td
             th:text="${service.getUserCheckedBook(user, book.isbn).dueDate}"
           ></td>
